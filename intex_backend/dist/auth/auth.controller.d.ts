@@ -40,9 +40,9 @@ export declare class AuthController {
     }>;
     findAll(page?: number, limit?: number, search?: string, role?: string): Promise<{
         data: {
-            id: number;
             name: string;
             email: string;
+            id: number;
             role: import(".prisma/client").$Enums.role;
             createAt: Date;
         }[];
@@ -55,11 +55,11 @@ export declare class AuthController {
     update(id: number, dto: UpdateAuthDto): Promise<{
         message: string;
         user: {
-            id: number;
             name: string;
             email: string;
             password: string;
             image: string;
+            id: number;
             role: import(".prisma/client").$Enums.role;
             createAt: Date;
         };

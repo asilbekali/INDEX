@@ -6,10 +6,10 @@ This is a full stack web application based on the **Intex** UI design built with
 
 The Intex platform is a responsive multi-page website UI that includes:
 
-- Landing page with modern layout
-- Services and features section
-- About us & team
-- Contact form
+- Landing page with modern layout  
+- Services and features section  
+- About us & team  
+- Contact form  
 - Admin or client dashboard *(optional based on logic)*
 
 ---
@@ -18,16 +18,16 @@ The Intex platform is a responsive multi-page website UI that includes:
 
 ### 📦 Backend
 
-- [NestJS](https://nestjs.com/) — Node.js framework
-- [Prisma](https://www.prisma.io/) — ORM for database
-- PostgreSQL / MySQL (configurable)
-- [Swagger](https://swagger.io/) for API documentation
-- Role-based access (RBAC)
-- JWT authentication
+- [NestJS](https://nestjs.com/) — Node.js framework  
+- [Prisma](https://www.prisma.io/) — ORM for database  
+- PostgreSQL / MySQL (configurable)  
+- [Swagger](https://swagger.io/) for API documentation  
+- Role-based access (RBAC)  
+- JWT authentication  
 
 ### 🎨 Frontend *(planned or in progress)*
 
-- HTML / CSS / TailwindCSS
+- HTML / CSS / TailwindCSS  
 - React / Next.js *(optional)*
 
 ---
@@ -68,7 +68,7 @@ npm install
 # or
 yarn install
 3. Set up environment variables
-Create .env file in root:
+Create a .env file in the project root and add the following:
 
 env
 Копировать
@@ -81,24 +81,28 @@ bash
 Редактировать
 npx prisma generate
 npx prisma migrate dev --name init
-5. Run server
+5. Run the server
 bash
 Копировать
 Редактировать
 npm run start:dev
 🧪 API Documentation
-After starting the server, open http://localhost:3000/api to view Swagger documentation.
+Once the server is running, open the following URL to view Swagger API documentation:
+
+📎 http://localhost:3000/api
 
 🧑‍💻 Developer Notes
-RBAC implemented (admin / user roles)
+✅ RBAC implemented (admin / user roles)
 
-Auth module with JWT access token
+🔐 Auth module with JWT access token
 
-Clean architecture with services, modules, DTOs
+🧱 Clean architecture with services, modules, DTOs
 
-Prisma client injected globally
+⚙️ Prisma client injected globally
 
 📄 License
 This project is licensed under the MIT License.
 
-Figma Design: Click to View UI
+🎨 UI Design Source
+🔗 View Figma Design | https://www.figma.com/design/xswPNtoPR6pJNF5hSVjebh/intex?node-id=105-688&t=wqhSDZa0aOOV7ZMs-0
+

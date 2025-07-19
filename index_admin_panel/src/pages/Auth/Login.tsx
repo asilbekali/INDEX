@@ -36,7 +36,7 @@ const Login = () => {
                 backgroundSize: "cover",
                 backgroundPosition: "center",
                 backgroundRepeat: "no-repeat",
-                position: "fixed", 
+                position: "fixed",
                 top: 0,
                 left: 0,
                 right: 0,
@@ -48,7 +48,6 @@ const Login = () => {
                 justifyContent: "center",
             }}
         >
-            {/* Form container */}
             <div
                 style={{
                     backgroundColor: "rgba(255, 255, 255, 0.95)",
@@ -66,7 +65,8 @@ const Login = () => {
                         fontSize: "28px",
                         fontWeight: "600",
                         color: "#20794D",
-                        fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                        fontFamily:
+                            "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
                     }}
                 >
                     INTEX-MARKET.UZ
@@ -77,10 +77,12 @@ const Login = () => {
                         fontSize: "16px",
                         marginBottom: "20px",
                         color: "rgba(0, 0, 0, 0.65)",
-                        fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                        fontFamily:
+                            "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
                     }}
                 >
-                    Iltimos! Saytdan foydalanish uchun parol va ismingizni kiriting
+                    Iltimos! Saytdan foydalanish uchun parol va ismingizni
+                    kiriting
                 </p>
                 <Form
                     name="login_form"
@@ -90,14 +92,25 @@ const Login = () => {
                 >
                     <Form.Item
                         name="email"
-                        rules={[{ required: true, message: "Iltimos, email kiriting!" }]}
+                        rules={[
+                            {
+                                required: true,
+                                message: "Iltimos, email kiriting!",
+                            },
+                        ]}
                     >
-                        <Input prefix={<MailOutlined />} placeholder="Email" size="large" />
+                        <Input
+                            prefix={<MailOutlined />}
+                            placeholder="Email"
+                            size="large"
+                        />
                     </Form.Item>
 
                     <Form.Item
                         name="password"
-                        rules={[{ required: true, message: "Parolni kiriting!" }]}
+                        rules={[
+                            { required: true, message: "Parolni kiriting!" },
+                        ]}
                     >
                         <Input.Password
                             prefix={<LockOutlined />}
@@ -106,7 +119,7 @@ const Login = () => {
                         />
                     </Form.Item>
 
-                    <Form.Item style={{ textAlign: "center" }}>
+                    <Form.Item style={{ textAlign: "center"}}>
                         <Button
                             htmlType="submit"
                             size="large"
@@ -120,12 +133,18 @@ const Login = () => {
                         >
                             Kirish
                         </Button>
+                        <Button
+                            type="link"
+                            onClick={() => navigate("/register")}
+                            style={{ marginLeft: "10px" }}
+                        >
+                            Ro‘yxatdan o‘tish
+                        </Button>
                     </Form.Item>
                 </Form>
             </div>
         </div>
     );
 };
-
 
 export default Login;

@@ -138,6 +138,13 @@ const Register = () => {
                         >
                             Ro‘yxatdan o‘tish
                         </Button>
+                        <Button
+                            type="link"
+                            onClick={() => navigate("/login")}
+                            style={{ marginLeft: "20px" }}
+                        >
+                            Login
+                        </Button>
                     </Form.Item>
                 </Form>
             </div>

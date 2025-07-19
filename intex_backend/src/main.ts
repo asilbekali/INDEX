@@ -1,19 +1,17 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    cors: {
+      origin: ['http://localhost:5173'],
+      credentials: true,
+    },
+  });
 
   app.useGlobalPipes(new ValidationPipe());
-
-  app.enableCors({
-    origin: '*',
-    credentials: true,
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-    allowedHeaders: 'Content-Type, Accept, Authorization',
-  });
 
   const config = new DocumentBuilder()
     .setTitle('INDEX example')
@@ -23,15 +21,14 @@ async function bootstrap() {
     .addTag('INDEX')
     .build();
 
-  const documentFactory = () => SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, documentFactory);
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document);
 
   await app.listen(process.env.PORT ?? 3000);
-
   console.log(
     '\n\x1b[42m%s\x1b[0m\x1b[32m %s\x1b[0m\n',
     ' Swagger ',
-    `http://localhost:${process.env.PORT ?? 3000}/api 🚀`,
+    'http://localhost:3000/api 🚀',
   );
 }
 

@@ -80,14 +80,14 @@ let AuthService = class AuthService {
             },
         };
     }
-    async login(dto) {
+    async login(email, password) {
         const user = await this.prisma.user.findUnique({
-            where: { email: dto.email },
+            where: { email: email },
         });
         if (!user) {
             throw new common_1.NotFoundException('User not found');
         }
-        const isMatch = await bcrypt.compare(dto.password, user.password);
+        const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
             throw new common_1.BadRequestException('Incorrect password');
         }

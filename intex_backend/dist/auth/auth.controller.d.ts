@@ -26,7 +26,10 @@ export declare class AuthController {
             createAt: Date;
         };
     }>;
-    login(dto: CreateAuthDto): Promise<string>;
+    login(body: {
+        email: string;
+        password: string;
+    }): Promise<string>;
     findAll(page?: number, limit?: number, search?: string, role?: string): Promise<{
         data: {
             id: number;

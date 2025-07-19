@@ -33,8 +33,9 @@ let AuthController = class AuthController {
     register_super_admin(dto) {
         return this.authService.register_super_admin(dto);
     }
-    login(dto) {
-        return this.authService.login(dto);
+    login(body) {
+        const { email, password } = body;
+        return this.authService.login(email, password);
     }
     findAll(page, limit, search, role) {
         return this.authService.findAll({ page, limit, search, role });
@@ -73,11 +74,18 @@ __decorate([
 __decorate([
     (0, common_1.Post)('login'),
     (0, swagger_1.ApiOperation)({ summary: 'Login user' }),
-    (0, swagger_1.ApiBody)({ type: create_auth_dto_1.CreateAuthDto }),
+    (0, swagger_1.ApiBody)({
+        schema: {
+            example: {
+                email: 'user@example.com',
+                password: 'strongPassword123',
+            },
+        },
+    }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Login successful' }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_auth_dto_1.CreateAuthDto]),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], AuthController.prototype, "login", null);
 __decorate([

@@ -85,16 +85,16 @@ export class AuthService {
     };
   }
 
-  async login(dto: CreateAuthDto) {
+  async login(email: string, password: string) {
     const user = await this.prisma.user.findUnique({
-      where: { email: dto.email },
+      where: { email: email },
     });
 
     if (!user) {
       throw new NotFoundException('User not found');
     }
 
-    const isMatch = await bcrypt.compare(dto.password, user.password);
+    const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
       throw new BadRequestException('Incorrect password');

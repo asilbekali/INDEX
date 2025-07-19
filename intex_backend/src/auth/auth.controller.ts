@@ -51,6 +51,14 @@ export class AuthController {
 
   @Post('login')
   @ApiOperation({ summary: 'Login user' })
+  @ApiBody({
+    schema: {
+      example: {
+        email: 'user@example.com',
+        password: 'strongPassword123',
+      },
+    },
+  })
   @ApiResponse({ status: 200, description: 'Login successful' })
   login(@Body() body: { email: string; password: string }) {
     const { email, password } = body;

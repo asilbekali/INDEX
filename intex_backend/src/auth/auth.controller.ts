@@ -51,13 +51,21 @@ export class AuthController {
 
   @Post('login')
   @ApiOperation({ summary: 'Login user' })
-  @ApiBody({ type: CreateAuthDto })
+  @ApiBody({
+    schema: {
+      example: {
+        email: 'user@example.com',
+        password: 'strongPassword123',
+      },
+    },
+  })
   @ApiResponse({ status: 200, description: 'Login successful' })
-  login(@Body() dto: CreateAuthDto) {
-    return this.authService.login(dto);
+  login(@Body() body: { email: string; password: string }) {
+    const { email, password } = body;
+    return this.authService.login(email, password);
   }
 
-  @RoleDec(Role.admin)
+  @RoleDec(Role.ADMIN)
   @UseGuards(RolesGuard)
   @UseGuards(AuthGuard)
   @Get()
@@ -94,7 +102,7 @@ export class AuthController {
     return this.authService.findAll({ page, limit, search, role });
   }
 
-  @RoleDec(Role.admin)
+  @RoleDec(Role.ADMIN)
   @UseGuards(RolesGuard)
   @UseGuards(AuthGuard)
   @Patch(':id')
@@ -105,7 +113,7 @@ export class AuthController {
     return this.authService.update(id, dto);
   }
 
-  @RoleDec(Role.admin)
+  @RoleDec(Role.ADMIN)
   @UseGuards(RolesGuard)
   @UseGuards(AuthGuard)
   @Delete(':id')

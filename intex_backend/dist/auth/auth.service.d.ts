@@ -28,18 +28,7 @@ export declare class AuthService {
             createAt: Date;
         };
     }>;
-    login(dto: CreateAuthDto): Promise<{
-        message: string;
-        token: string;
-        user: {
-            id: number;
-            name: string;
-            email: string;
-            role: import(".prisma/client").$Enums.role;
-            image: string;
-            createAt: Date;
-        };
-    }>;
+    login(email: string, password: string): Promise<string>;
     findAll(options: {
         page?: number;
         limit?: number;

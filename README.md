@@ -58,7 +58,7 @@ yaml
 ### 1. Clone the repo
 
 ```bash
-git clone https://github.com/your-username/intex.git
+git clone https:[//github.com/your-username/intex.git](https://github.com/asilbekali/INTEX.git)
 cd intex-backend
 2. Install dependencies
 bash
@@ -92,7 +92,7 @@ Once the server is running, open the following URL to view Swagger API documenta
 📎 http://localhost:3000/api
 
 🧑‍💻 Developer Notes
-✅ RBAC implemented (admin / user roles)
+✅ RBAC implemented (admin / super_admin roles)
 
 🔐 Auth module with JWT access token
 

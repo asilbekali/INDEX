@@ -27,9 +27,19 @@ export const GlobalContext: FC<{ children: ReactNode }> = ({ children }) => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const storedToken = localStorage.getItem("token");
-        if (storedToken) setTokenState(storedToken);
-    }, []);
+        let timeout: NodeJS.Timeout;
+
+        if (token) {
+            timeout = setTimeout(() => {
+                setToken(null); 
+                navigate("/login");
+            }, 3600000); 
+        }
+
+        return () => {
+            clearTimeout(timeout);
+        };
+    }, [token]);
 
     useEffect(() => {
         const interval = setInterval(() => {

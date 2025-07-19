@@ -51,10 +51,10 @@ export class AuthController {
 
   @Post('login')
   @ApiOperation({ summary: 'Login user' })
-  @ApiBody({ type: CreateAuthDto })
   @ApiResponse({ status: 200, description: 'Login successful' })
-  login(@Body() dto: CreateAuthDto) {
-    return this.authService.login(dto);
+  login(@Body() body: { email: string; password: string }) {
+    const { email, password } = body;
+    return this.authService.login(email, password);
   }
 
   @RoleDec(Role.ADMIN)

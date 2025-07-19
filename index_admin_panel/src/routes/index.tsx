@@ -1,17 +1,15 @@
-// src/routes/index.tsx
-import { BrowserRouter, Routes, Route } from "react-router-dom"
-import Login from "../pages/Auth/Login"
-// import Register from "../pages/Auth/Register"
+import { Route, Routes } from "react-router-dom";
+import { DashboardRouteList } from "../hooks/paths";
+import type { DashboardRouteType } from "../types/DashboardRouteType";
 
-const AppRoutes = () => {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        {/* <Route path="/register" element={<Register />} /> */}
-      </Routes>
-    </BrowserRouter>
-  )
-}
+const DashboardRoute = () => {
+    return (
+        <Routes>
+            {DashboardRouteList.map((item: DashboardRouteType) => (
+                <Route key={item.id} path={item.path} element={item.element} />
+            ))}
+        </Routes>
+    );
+};
 
-export default AppRoutes
+export default DashboardRoute;

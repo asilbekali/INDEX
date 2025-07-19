@@ -1,24 +1,33 @@
-import { LockOutlined, MailOutlined } from "@ant-design/icons"
-import { Button, Form, Input, message } from "antd"
-import axios from "axios"
-import { useNavigate } from "react-router-dom"
+import { LockOutlined, MailOutlined } from "@ant-design/icons";
+import { Button, Form, Input, message } from "antd";
+import { useNavigate } from "react-router-dom";
+import { loginUser } from "../../api/userApi";
+import { useContext } from "react";
+import { Context } from "../../context/UserContext";
 
 const Login = () => {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const { setToken, token } = useContext(Context);
 
-    const onFinish = async (values: any) => {
+    console.log("bu login", token);
+
+    const onFinish = async (values: { email: string; password: string }) => {
         try {
-            const res = await axios.post("http://localhost:5000/api/auth/login", {
-                email: values.email,
-                password: values.password,
-            })
-            localStorage.setItem("token", res.data.token)
-            message.success("Muvaffaqiyatli login!")
-            navigate("/dashboard")
-        } catch (error) {
-            message.error("Login xatosi. Email yoki parol noto‘g‘ri.")
+            const res = await loginUser(values.email, values.password);
+
+            const token = res.split(":")[1];
+
+            localStorage.setItem("token", token);
+            setToken(token);
+
+            message.success("Muvaffaqiyatli login!");
+            navigate("/order");
+        } catch (error: any) {
+            message.error(
+                error.message || "Login xatosi. Email yoki parol noto‘g‘ri."
+            );
         }
-    }
+    };
 
     return (
         <div
@@ -65,12 +74,19 @@ const Login = () => {
                             "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
                     }}
                 >
-                    Iltimos! Saytdan foydalanish uchun parol va ismingizni kiriting
+                    Iltimos! Saytdan foydalanish uchun parol va ismingizni
+                    kiriting
                 </p>
                 <Form name="login_form" onFinish={onFinish} layout="vertical">
                     <Form.Item
                         name="email"
-                        rules={[{ required: true, message: "Iltimos, email kiriting!" }]}
+                        rules={[
+                            {
+                                required: true,
+                                message: "Iltimos, email kiriting!",
+                                type: "email",
+                            },
+                        ]}
                     >
                         <Input
                             prefix={<MailOutlined />}
@@ -81,7 +97,9 @@ const Login = () => {
 
                     <Form.Item
                         name="password"
-                        rules={[{ required: true, message: "Parolni kiriting!" }]}
+                        rules={[
+                            { required: true, message: "Parolni kiriting!" },
+                        ]}
                     >
                         <Input.Password
                             prefix={<LockOutlined />}
@@ -107,7 +125,7 @@ const Login = () => {
                 </Form>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default Login
+export default Login;

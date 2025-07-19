@@ -57,7 +57,7 @@ export class AuthController {
     return this.authService.login(dto);
   }
 
-  @RoleDec(Role.admin)
+  @RoleDec(Role.ADMIN)
   @UseGuards(RolesGuard)
   @UseGuards(AuthGuard)
   @Get()
@@ -94,7 +94,7 @@ export class AuthController {
     return this.authService.findAll({ page, limit, search, role });
   }
 
-  @RoleDec(Role.admin)
+  @RoleDec(Role.ADMIN)
   @UseGuards(RolesGuard)
   @UseGuards(AuthGuard)
   @Patch(':id')
@@ -105,7 +105,7 @@ export class AuthController {
     return this.authService.update(id, dto);
   }
 
-  @RoleDec(Role.admin)
+  @RoleDec(Role.ADMIN)
   @UseGuards(RolesGuard)
   @UseGuards(AuthGuard)
   @Delete(':id')

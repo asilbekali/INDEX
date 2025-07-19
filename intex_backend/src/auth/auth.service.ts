@@ -34,7 +34,7 @@ export class AuthService {
         email: dto.email,
         password: hashedPassword,
         image: dto.image,
-        role: role.admin || 'admin',
+        role: role.ADMIN || 'ADMIN',
       },
     });
 
@@ -68,7 +68,7 @@ export class AuthService {
         email: dto.email,
         password: hashedPassword,
         image: dto.image,
-        role: role.super_admin || 'super_admin',
+        role: role.SUPER_ADMIN || 'SUPER_ADMIN',
       },
     });
 
@@ -108,18 +108,7 @@ export class AuthService {
 
     const token = await this.jwt.signAsync(payload);
 
-    return {
-      message: 'Login successful',
-      token,
-      user: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-        image: user.image,
-        createAt: user.createAt,
-      },
-    };
+    return `acces token: ${token}`;
   }
 
   async findAll(options: {

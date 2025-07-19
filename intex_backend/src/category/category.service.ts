@@ -1,26 +1,103 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
+import { Prisma } from '@prisma/client';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class CategoryService {
-  create(createCategoryDto: CreateCategoryDto) {
-    return 'This action adds a new category';
+  constructor(private readonly prisma: PrismaService) {}
+
+  async create(createCategoryDto: CreateCategoryDto) {
+    const existing = await this.prisma.category.findUnique({
+      where: { name: createCategoryDto.name },
+    });
+
+    if (existing) {
+      throw new BadRequestException('Bu nomdagi kategoriya allaqachon mavjud');
+    }
+
+    return this.prisma.category.create({
+      data: createCategoryDto,
+    });
   }
 
-  findAll() {
-    return `This action returns all category`;
+  async findAll(query: { page?: number; limit?: number; name?: string }) {
+    const page = Number(query.page) || 1;
+    const limit = Number(query.limit) || 10;
+    const skip = (page - 1) * limit;
+
+    const where: Prisma.categoryWhereInput = query.name
+      ? {
+          name: {
+            contains: query.name,
+            mode: Prisma.QueryMode.insensitive,
+          },
+        }
+      : {};
+
+    const [categories, total] = await Promise.all([
+      this.prisma.category.findMany({
+        where,
+        skip,
+        take: limit,
+        orderBy: { name: 'asc' },
+      }),
+      this.prisma.category.count({ where }),
+    ]);
+
+    return {
+      data: categories,
+      meta: {
+        total,
+        page,
+        lastPage: Math.ceil(total / limit),
+      },
+    };
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} category`;
+  async findOne(id: number) {
+    const category = await this.prisma.category.findUnique({
+      where: { id },
+    });
+
+    if (!category) {
+      throw new NotFoundException(`ID ${id} bo‘yicha kategoriya topilmadi`);
+    }
+
+    return category;
   }
 
-  update(id: number, updateCategoryDto: UpdateCategoryDto) {
-    return `This action updates a #${id} category`;
+  async update(id: number, updateCategoryDto: UpdateCategoryDto) {
+    const existing = await this.prisma.category.findUnique({
+      where: { id },
+    });
+
+    if (!existing) {
+      throw new NotFoundException(`ID ${id} bo‘yicha kategoriya topilmadi`);
+    }
+
+    return this.prisma.category.update({
+      where: { id },
+      data: updateCategoryDto,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} category`;
+  async remove(id: number) {
+    const existing = await this.prisma.category.findUnique({
+      where: { id },
+    });
+
+    if (!existing) {
+      throw new NotFoundException(`ID ${id} bo‘yicha kategoriya topilmadi`);
+    }
+
+    return this.prisma.category.delete({
+      where: { id },
+    });
   }
 }

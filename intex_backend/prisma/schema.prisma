@@ -19,7 +19,7 @@ model user {
   email    String   @unique
   password String
   image    String
-  role     role     @default(admin)
+  role     role     @default(ADMIN)
   createAt DateTime @default(now())
 }
 
@@ -49,8 +49,8 @@ model category {
 // -------------------------------------
 
 enum role {
-  admin
-  super_admin
+  ADMIN
+  SUPER_ADMIN
 }
 
 enum frame {

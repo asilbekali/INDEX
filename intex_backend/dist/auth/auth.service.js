@@ -36,7 +36,7 @@ let AuthService = class AuthService {
                 email: dto.email,
                 password: hashedPassword,
                 image: dto.image,
-                role: client_1.role.admin || 'admin',
+                role: client_1.role.ADMIN || 'ADMIN',
             },
         });
         return {
@@ -65,7 +65,7 @@ let AuthService = class AuthService {
                 email: dto.email,
                 password: hashedPassword,
                 image: dto.image,
-                role: client_1.role.super_admin || 'super_admin',
+                role: client_1.role.SUPER_ADMIN || 'SUPER_ADMIN',
             },
         });
         return {
@@ -97,18 +97,7 @@ let AuthService = class AuthService {
             role: user.role,
         };
         const token = await this.jwt.signAsync(payload);
-        return {
-            message: 'Login successful',
-            token,
-            user: {
-                id: user.id,
-                name: user.name,
-                email: user.email,
-                role: user.role,
-                image: user.image,
-                createAt: user.createAt,
-            },
-        };
+        return `acces token: ${token}`;
     }
     async findAll(options) {
         const { page = 1, limit = 10, search, role } = options;

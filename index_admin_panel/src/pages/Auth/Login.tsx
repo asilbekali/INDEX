@@ -35,12 +35,20 @@ const Login = () => {
                 backgroundImage: "url('/LoginImage.jpg')",
                 backgroundSize: "cover",
                 backgroundPosition: "center",
+                backgroundRepeat: "no-repeat",
+                position: "fixed", 
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                width: "100%",
                 minHeight: "100vh",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
             }}
         >
+            {/* Form container */}
             <div
                 style={{
                     backgroundColor: "rgba(255, 255, 255, 0.95)",
@@ -58,8 +66,7 @@ const Login = () => {
                         fontSize: "28px",
                         fontWeight: "600",
                         color: "#20794D",
-                        fontFamily:
-                            "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                        fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
                     }}
                 >
                     INTEX-MARKET.UZ
@@ -70,36 +77,27 @@ const Login = () => {
                         fontSize: "16px",
                         marginBottom: "20px",
                         color: "rgba(0, 0, 0, 0.65)",
-                        fontFamily:
-                            "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                        fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
                     }}
                 >
-                    Iltimos! Saytdan foydalanish uchun parol va ismingizni
-                    kiriting
+                    Iltimos! Saytdan foydalanish uchun parol va ismingizni kiriting
                 </p>
-                <Form name="login_form" onFinish={onFinish} layout="vertical">
+                <Form
+                    name="login_form"
+                    onFinish={onFinish}
+                    layout="vertical"
+                    style={{ color: "#20794D" }}
+                >
                     <Form.Item
                         name="email"
-                        rules={[
-                            {
-                                required: true,
-                                message: "Iltimos, email kiriting!",
-                                type: "email",
-                            },
-                        ]}
+                        rules={[{ required: true, message: "Iltimos, email kiriting!" }]}
                     >
-                        <Input
-                            prefix={<MailOutlined />}
-                            placeholder="Email"
-                            size="large"
-                        />
+                        <Input prefix={<MailOutlined />} placeholder="Email" size="large" />
                     </Form.Item>
 
                     <Form.Item
                         name="password"
-                        rules={[
-                            { required: true, message: "Parolni kiriting!" },
-                        ]}
+                        rules={[{ required: true, message: "Parolni kiriting!" }]}
                     >
                         <Input.Password
                             prefix={<LockOutlined />}
@@ -108,12 +106,13 @@ const Login = () => {
                         />
                     </Form.Item>
 
-                    <Form.Item>
+                    <Form.Item style={{ textAlign: "center" }}>
                         <Button
                             htmlType="submit"
                             size="large"
                             style={{
-                                width: "100%",
+                                width: "45%",
+                                margin: "0 auto",
                                 backgroundColor: "#20794D",
                                 color: "white",
                                 border: "none",
@@ -127,5 +126,6 @@ const Login = () => {
         </div>
     );
 };
+
 
 export default Login;

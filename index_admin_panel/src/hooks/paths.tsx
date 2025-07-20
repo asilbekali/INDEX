@@ -1,9 +1,8 @@
-// paths.tsx
-import { NavLink } from "react-router-dom";
+
 import Login from "../pages/Auth/Login";
 import Register from "../pages/Auth/Register";
-import Home from "../pages/home";
-import Order from "../pages/Order";
+import { Home } from "lucide-react";
+import OrdersPage from "../pages/Order";
 import Products from "../pages/Products";
 
 export const path = {
@@ -12,6 +11,7 @@ export const path = {
     register: "/register",
     product: "/product",
     order: "/order",
+    category: "/category",
     notFound: "*",
 };
 
@@ -19,7 +19,7 @@ export const DashboardRouteList = [
     {
         id: 1,
         path: path.home,
-        element: <Home />,
+        element: <Home />
     },
     {
         id: 2,
@@ -34,22 +34,12 @@ export const DashboardRouteList = [
     {
         id: 4,
         path: path.product,
-        element: <Products />,
+        element: <Products />
     },
     {
         id: 5,
         path: path.order,
-        element: <Order />,
+        element: <OrdersPage />,
     },
 ];
 
-export const DashboardNavList = [
-    {
-        key: 1,
-        label: <NavLink to={path.product}>Yo'nalishlar</NavLink>,
-    },
-    {
-        key: 2,
-        label: <NavLink to={path.order}>Guruxlar</NavLink>,
-    },
-];

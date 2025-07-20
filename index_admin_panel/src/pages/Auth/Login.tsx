@@ -151,10 +151,10 @@ const Login = () => {
                                 marginLeft: "10px",
                                 color: "#009398",
                                 borderRadius: "8px",
-                                border: "1.5px solid #009398", 
+                                border: "1.5px solid #009398",
                                 backgroundColor: "white",
                                 textAlign: "center",
-                                paddingBottom:"2px"
+                                paddingBottom: "2px"
                             }}
                         >
                             Ro‘yxatdan o‘tish

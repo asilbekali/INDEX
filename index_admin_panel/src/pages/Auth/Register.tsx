@@ -156,6 +156,7 @@ const Register = () => {
                             onClick={() => navigate("/login")}
                             size="large"
                             style={{
+                                width: "45%",
                                 marginLeft: "10px",
                                 color: "#009398",
                                 borderRadius: "8px",

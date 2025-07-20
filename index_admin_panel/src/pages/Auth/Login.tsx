@@ -64,7 +64,7 @@ const Login = () => {
                         marginBottom: "24px",
                         fontSize: "28px",
                         fontWeight: "600",
-                        color: "#20794D",
+                        color: "#009398",
                         fontFamily:
                             "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
                     }}
@@ -88,7 +88,7 @@ const Login = () => {
                     name="login_form"
                     onFinish={onFinish}
                     layout="vertical"
-                    style={{ color: "#20794D" }}
+                    style={{ color: "#009398" }}
                 >
                     <Form.Item
                         name="email"
@@ -98,11 +98,16 @@ const Login = () => {
                                 message: "Iltimos, email kiriting!",
                             },
                         ]}
+
                     >
                         <Input
                             prefix={<MailOutlined />}
                             placeholder="Email"
                             size="large"
+                            style={{
+                                color: "#009398",
+                                border: "1px solid #009398"
+                            }}
                         />
                     </Form.Item>
 
@@ -116,6 +121,10 @@ const Login = () => {
                             prefix={<LockOutlined />}
                             placeholder="Parol"
                             size="large"
+                            style={{
+                                color: "#009398",
+                                border: "1px solid #009398"
+                            }}
                         />
                     </Form.Item>
 
@@ -126,9 +135,10 @@ const Login = () => {
                             style={{
                                 width: "45%",
                                 margin: "0 auto",
-                                backgroundColor: "#20794D",
+                                backgroundColor: "#009398",
                                 color: "white",
                                 border: "none",
+
                             }}
                         >
                             Kirish
@@ -136,7 +146,16 @@ const Login = () => {
                         <Button
                             type="link"
                             onClick={() => navigate("/register")}
-                            style={{ marginLeft: "10px" }}
+                            size="large"
+                            style={{
+                                marginLeft: "10px",
+                                color: "#009398",
+                                borderRadius: "8px",
+                                border: "1.5px solid #009398", 
+                                backgroundColor: "white",
+                                textAlign: "center",
+                                paddingBottom:"2px"
+                            }}
                         >
                             Ro‘yxatdan o‘tish
                         </Button>

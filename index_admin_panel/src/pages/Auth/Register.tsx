@@ -59,7 +59,7 @@ const Register = () => {
                         marginBottom: "24px",
                         fontSize: "28px",
                         fontWeight: "600",
-                        color: "#20794D",
+                        color: "#009398",
                         fontFamily:
                             "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
                     }}
@@ -94,6 +94,11 @@ const Register = () => {
                             prefix={<UserOutlined />}
                             placeholder="Ism"
                             size="large"
+                            style={{
+                                color: "#009398",
+                                border: "1px solid #009398"
+                            }}
+
                         />
                     </Form.Item>
 
@@ -107,6 +112,10 @@ const Register = () => {
                             prefix={<MailOutlined />}
                             placeholder="Email"
                             size="large"
+                            style={{
+                                color: "#009398",
+                                border: "1px solid #009398"
+                            }}
                         />
                     </Form.Item>
 
@@ -120,6 +129,10 @@ const Register = () => {
                             prefix={<LockOutlined />}
                             placeholder="Parol"
                             size="large"
+                            style={{
+                                color: "#009398",
+                                border: "1px solid #009398"
+                            }}
                         />
                     </Form.Item>
 
@@ -131,7 +144,7 @@ const Register = () => {
                             style={{
                                 width: "45%",
                                 margin: "0 auto",
-                                backgroundColor: "#20794D",
+                                backgroundColor: "#009398",
                                 color: "white",
                                 border: "none",
                             }}
@@ -141,7 +154,16 @@ const Register = () => {
                         <Button
                             type="link"
                             onClick={() => navigate("/login")}
-                            style={{ marginLeft: "20px" }}
+                            size="large"
+                            style={{
+                                marginLeft: "10px",
+                                color: "#009398",
+                                borderRadius: "8px",
+                                border: "1.5px solid #009398",
+                                backgroundColor: "white",
+                                textAlign: "center",
+                                paddingBottom: "1.6px"
+                            }}
                         >
                             Login
                         </Button>

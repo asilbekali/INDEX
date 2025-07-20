@@ -1,7 +1,11 @@
+import Header from "../modules/Header";
 
 
 const Home = () => {
-    return <h2>home</h2>
+    return (
+        <>
+            <Header />
+        </>)
 };
 
 export default Home;

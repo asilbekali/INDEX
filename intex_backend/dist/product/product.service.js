@@ -18,7 +18,7 @@ let ProductService = class ProductService {
         this.prisma = prisma;
     }
     async create(dto) {
-        const category = await this.prisma.category.findUnique({
+        const category = await this.prisma.category.findFirst({
             where: { id: dto.categoryId },
         });
         if (!category)
@@ -42,17 +42,17 @@ let ProductService = class ProductService {
         return { data, total, page, lastPage: Math.ceil(total / limit) };
     }
     async findOne(id) {
-        const product = await this.prisma.product.findUnique({ where: { id } });
+        const product = await this.prisma.product.findFirst({ where: { id } });
         if (!product)
             throw new common_1.NotFoundException('Product not found');
         return product;
     }
     async update(id, dto) {
-        const product = await this.prisma.product.findUnique({ where: { id } });
+        const product = await this.prisma.product.findFirst({ where: { id } });
         if (!product)
             throw new common_1.NotFoundException('Product not found');
         if (dto.categoryId) {
-            const category = await this.prisma.category.findUnique({
+            const category = await this.prisma.category.findFirst({
                 where: { id: dto.categoryId },
             });
             if (!category)
@@ -61,7 +61,7 @@ let ProductService = class ProductService {
         return this.prisma.product.update({ where: { id }, data: dto });
     }
     async remove(id) {
-        const product = await this.prisma.product.findUnique({ where: { id } });
+        const product = await this.prisma.product.findFirst({ where: { id } });
         if (!product)
             throw new common_1.NotFoundException('Product not found');
         return this.prisma.product.delete({ where: { id } });

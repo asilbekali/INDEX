@@ -23,7 +23,7 @@ let AuthService = class AuthService {
         this.jwt = jwt;
     }
     async register_admin(dto) {
-        const existingUser = await this.prisma.user.findUnique({
+        const existingUser = await this.prisma.user.findFirst({
             where: { email: dto.email },
         });
         if (existingUser) {
@@ -52,7 +52,7 @@ let AuthService = class AuthService {
         };
     }
     async register_super_admin(dto) {
-        const existingUser = await this.prisma.user.findUnique({
+        const existingUser = await this.prisma.user.findFirst({
             where: { email: dto.email },
         });
         if (existingUser) {
@@ -81,7 +81,7 @@ let AuthService = class AuthService {
         };
     }
     async login(email, password) {
-        const user = await this.prisma.user.findUnique({
+        const user = await this.prisma.user.findFirst({
             where: { email: email },
         });
         if (!user) {
@@ -135,7 +135,7 @@ let AuthService = class AuthService {
         };
     }
     async update(id, dto) {
-        const user = await this.prisma.user.findUnique({ where: { id } });
+        const user = await this.prisma.user.findFirst({ where: { id } });
         if (!user) {
             throw new common_1.NotFoundException('User not found');
         }
@@ -156,7 +156,7 @@ let AuthService = class AuthService {
         };
     }
     async remove(id) {
-        const user = await this.prisma.user.findUnique({ where: { id } });
+        const user = await this.prisma.user.findFirst({ where: { id } });
         if (!user) {
             throw new common_1.NotFoundException('User not found');
         }

@@ -12,7 +12,7 @@ export class ProductService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(dto: CreateProductDto) {
-    const category = await this.prisma.category.findUnique({
+    const category = await this.prisma.category.findFirst({
       where: { id: dto.categoryId },
     });
     if (!category) throw new BadRequestException('Invalid category ID');
@@ -41,17 +41,17 @@ export class ProductService {
   }
 
   async findOne(id: number) {
-    const product = await this.prisma.product.findUnique({ where: { id } });
+    const product = await this.prisma.product.findFirst({ where: { id } });
     if (!product) throw new NotFoundException('Product not found');
     return product;
   }
 
   async update(id: number, dto: UpdateProductDto) {
-    const product = await this.prisma.product.findUnique({ where: { id } });
+    const product = await this.prisma.product.findFirst({ where: { id } });
     if (!product) throw new NotFoundException('Product not found');
 
     if (dto.categoryId) {
-      const category = await this.prisma.category.findUnique({
+      const category = await this.prisma.category.findFirst({
         where: { id: dto.categoryId },
       });
       if (!category) throw new BadRequestException('Invalid category ID');
@@ -61,7 +61,7 @@ export class ProductService {
   }
 
   async remove(id: number) {
-    const product = await this.prisma.product.findUnique({ where: { id } });
+    const product = await this.prisma.product.findFirst({ where: { id } });
     if (!product) throw new NotFoundException('Product not found');
     return this.prisma.product.delete({ where: { id } });
   }

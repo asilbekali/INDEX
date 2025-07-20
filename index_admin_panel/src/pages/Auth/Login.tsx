@@ -20,7 +20,7 @@ const Login = () => {
             localStorage.setItem("token", token);
             setToken(token);
 
-            message.success("Muvaffaqiyatli login!");
+            message.success("Login successful !");
             navigate("/order");
         } catch (error: any) {
             message.error(

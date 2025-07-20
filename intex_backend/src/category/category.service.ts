@@ -13,7 +13,7 @@ export class CategoryService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(createCategoryDto: CreateCategoryDto) {
-    const existing = await this.prisma.category.findUnique({
+    const existing = await this.prisma.category.findFirst({
       where: { name: createCategoryDto.name },
     });
 
@@ -61,7 +61,7 @@ export class CategoryService {
   }
 
   async findOne(id: number) {
-    const category = await this.prisma.category.findUnique({
+    const category = await this.prisma.category.findFirst({
       where: { id },
     });
 
@@ -73,7 +73,7 @@ export class CategoryService {
   }
 
   async update(id: number, updateCategoryDto: UpdateCategoryDto) {
-    const existing = await this.prisma.category.findUnique({
+    const existing = await this.prisma.category.findFirst({
       where: { id },
     });
 
@@ -88,7 +88,7 @@ export class CategoryService {
   }
 
   async remove(id: number) {
-    const existing = await this.prisma.category.findUnique({
+    const existing = await this.prisma.category.findFirst({
       where: { id },
     });
 

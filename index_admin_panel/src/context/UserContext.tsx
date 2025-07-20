@@ -16,13 +16,13 @@ type ContextType = {
 
 export const Context = createContext<ContextType>({
     token: null,
-    setToken: () => {},
+    setToken: () => { },
     showNavbar: false,
-    setShowNavbar: () => {},
+    setShowNavbar: () => { },
 });
 
 export const GlobalContext: FC<{ children: ReactNode }> = ({ children }) => {
-    const [token, setTokenState] = useState<string | null>(null);
+    const [token, setTokenState] = useState<string | null>(localStorage.getItem("token"));
     const [showNavbar, setShowNavbar] = useState<boolean>(false);
     const navigate = useNavigate();
 
@@ -31,9 +31,9 @@ export const GlobalContext: FC<{ children: ReactNode }> = ({ children }) => {
 
         if (token) {
             timeout = setTimeout(() => {
-                setToken(null); 
+                setToken(null);
                 navigate("/login");
-            }, 3600000); 
+            }, 3600000);
         }
 
         return () => {
@@ -45,7 +45,7 @@ export const GlobalContext: FC<{ children: ReactNode }> = ({ children }) => {
         const interval = setInterval(() => {
             const storedToken = localStorage.getItem("token");
             if (!storedToken && token) {
-                setTokenState(null);
+                setToken(null);
                 navigate("/login");
             }
         }, 1000);

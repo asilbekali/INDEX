@@ -6,7 +6,7 @@ const Home = () => {
     useEffect(() => {
         navigate("/order");
     }, []);
-    return "";
+    return null;
 };
 
 export default Home;

@@ -1,33 +1,39 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { useContext } from "react";
+import { Context } from "./context/UserContext";
+
 import Login from "./pages/Auth/Login";
-import Register from "./pages/Auth/Register"; // Register sahifasini import qiling
+import Register from "./pages/Auth/Register";
 import Home from "./pages/home";
-import OrderPage from "./pages/Order";
-import PrivateRoute from "./components/PrivateRoute";
+import Products from "./pages/Products";
+import Order from "./pages/Order";
+
+const ProtectedRoutes = ({ children }: { children: JSX.Element }) => {
+    const { token } = useContext(Context);
+    const location = useLocation();
+
+    if (!token) {
+        const publicPaths = ["/login", "/register"];
+        if (!publicPaths.includes(location.pathname)) {
+            return <Navigate to="/login" replace />;
+        }
+    }
+
+    return children;
+};
 
 function App() {
     return (
-        <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />{" "}
-            <Route
-                path="/"
-                element={
-                    <PrivateRoute>
-                        <Home />
-                    </PrivateRoute>
-                }
-            />
-            <Route
-                path="/order"
-                element={
-                    <PrivateRoute>
-                        <OrderPage />
-                    </PrivateRoute>
-                }
-            />
-            <Route path="*" element={<Navigate to="/" />} />
-        </Routes>
+        <ProtectedRoutes>
+            <Routes>
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/" element={<Home />} />
+                <Route path="/order" element={<Order />} />
+                <Route path="/products" element={<Products />} />
+                <Route path="*" element={<Navigate to="/" />} />
+            </Routes>
+        </ProtectedRoutes>
     );
 }
 

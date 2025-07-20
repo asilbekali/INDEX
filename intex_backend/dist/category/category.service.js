@@ -19,7 +19,7 @@ let CategoryService = class CategoryService {
         this.prisma = prisma;
     }
     async create(createCategoryDto) {
-        const existing = await this.prisma.category.findUnique({
+        const existing = await this.prisma.category.findFirst({
             where: { name: createCategoryDto.name },
         });
         if (existing) {
@@ -60,7 +60,7 @@ let CategoryService = class CategoryService {
         };
     }
     async findOne(id) {
-        const category = await this.prisma.category.findUnique({
+        const category = await this.prisma.category.findFirst({
             where: { id },
         });
         if (!category) {
@@ -69,7 +69,7 @@ let CategoryService = class CategoryService {
         return category;
     }
     async update(id, updateCategoryDto) {
-        const existing = await this.prisma.category.findUnique({
+        const existing = await this.prisma.category.findFirst({
             where: { id },
         });
         if (!existing) {
@@ -81,7 +81,7 @@ let CategoryService = class CategoryService {
         });
     }
     async remove(id) {
-        const existing = await this.prisma.category.findUnique({
+        const existing = await this.prisma.category.findFirst({
             where: { id },
         });
         if (!existing) {

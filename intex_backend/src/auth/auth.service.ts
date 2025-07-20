@@ -18,7 +18,7 @@ export class AuthService {
   ) {}
 
   async register_admin(dto: CreateAuthDto) {
-    const existingUser = await this.prisma.user.findUnique({
+    const existingUser = await this.prisma.user.findFirst({
       where: { email: dto.email },
     });
 
@@ -52,7 +52,7 @@ export class AuthService {
   }
 
   async register_super_admin(dto: CreateAuthDto) {
-    const existingUser = await this.prisma.user.findUnique({
+    const existingUser = await this.prisma.user.findFirst({
       where: { email: dto.email },
     });
 
@@ -86,7 +86,7 @@ export class AuthService {
   }
 
   async login(email: string, password: string) {
-    const user = await this.prisma.user.findUnique({
+    const user = await this.prisma.user.findFirst({
       where: { email: email },
     });
 
@@ -158,7 +158,7 @@ export class AuthService {
   }
 
   async update(id: number, dto: UpdateAuthDto) {
-    const user = await this.prisma.user.findUnique({ where: { id } });
+    const user = await this.prisma.user.findFirst({ where: { id } });
     if (!user) {
       throw new NotFoundException('User not found');
     }
@@ -183,7 +183,7 @@ export class AuthService {
   }
 
   async remove(id: number) {
-    const user = await this.prisma.user.findUnique({ where: { id } });
+    const user = await this.prisma.user.findFirst({ where: { id } });
     if (!user) {
       throw new NotFoundException('User not found');
     }

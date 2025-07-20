@@ -17,6 +17,7 @@ async function bootstrap() {
     .setTitle('INDEX example')
     .setDescription('The INDEX API description')
     .setVersion('1.0')
+    .addSecurityRequirements('bearer', ['bearer'])
     .addBearerAuth()
     .addTag('INDEX')
     .build();

@@ -32,7 +32,7 @@ const Login = () => {
     return (
         <div
             style={{
-                backgroundImage: "url('/LoginImage.jpg')",
+                backgroundImage: "url('/Rectangle343.png')",
                 backgroundSize: "cover",
                 backgroundPosition: "center",
                 backgroundRepeat: "no-repeat",
@@ -119,7 +119,7 @@ const Login = () => {
                         />
                     </Form.Item>
 
-                    <Form.Item style={{ textAlign: "center"}}>
+                    <Form.Item style={{ textAlign: "center" }}>
                         <Button
                             htmlType="submit"
                             size="large"

@@ -28,7 +28,7 @@ const Register = () => {
     return (
         <div
             style={{
-                backgroundImage: "url('/LoginImage.jpg')",
+                backgroundImage: "url('/Rectangle343.png')",
                 backgroundSize: "cover",
                 backgroundPosition: "center",
                 backgroundRepeat: "no-repeat",

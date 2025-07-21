@@ -1,22 +1,24 @@
-"use client";
+// src/context/UserContext.tsx
+"use client"
 
 import {
     createContext,
     useState,
     useEffect,
-    type FC,
+    useCallback,
+    useMemo,
     type ReactNode,
-} from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+} from "react"
+import { useLocation, useNavigate } from "react-router-dom"
 
 type ContextType = {
-    token: string | null;
-    setToken: (token: string | null) => void;
-    showNavbar: boolean;
-    setShowNavbar: (value: boolean) => void;
-    isLoading: boolean;
-    logout: () => void;
-};
+    token: string | null
+    setToken: (token: string | null) => void
+    showNavbar: boolean
+    setShowNavbar: (value: boolean) => void
+    isLoading: boolean
+    logout: () => void
+}
 
 export const Context = createContext<ContextType>({
     token: null,
@@ -25,85 +27,99 @@ export const Context = createContext<ContextType>({
     setShowNavbar: () => { },
     isLoading: true,
     logout: () => { },
-});
+})
 
-export const GlobalContext: FC<{ children: ReactNode }> = ({ children }) => {
-    const [token, setTokenState] = useState<string | null>(null);
-    const [showNavbar, setShowNavbar] = useState<boolean>(true);
-    const [isLoading, setIsLoading] = useState<boolean>(true);
-    const navigate = useNavigate();
-    const location = useLocation();
+export const GlobalContext = ({ children }: { children: ReactNode }) => {
+    const [token, setTokenState] = useState<string | null>(null)
+    const [showNavbar, setShowNavbar] = useState<boolean>(true)
+    const [isLoading, setIsLoading] = useState<boolean>(true)
 
-    useEffect(() => {
-        const storedToken = localStorage.getItem("token");
-        const expiry = localStorage.getItem("token_expiry");
+    const navigate = useNavigate()
+    const location = useLocation()
+
+    const clearToken = useCallback((redirect = true) => {
+        localStorage.removeItem("token")
+        localStorage.removeItem("token_expiry")
+        setTokenState(null)
+        if (redirect) navigate("/login")
+    }, [navigate])
+
+    const checkTokenValidity = useCallback(() => {
+        const storedToken = localStorage.getItem("token")
+        const expiry = localStorage.getItem("token_expiry")
 
         if (storedToken && expiry) {
-            const now = Date.now();
-            if (now >= Number(expiry)) {
-                clearToken(false);
+            const now = Date.now()
+            const expiryTime = Number(expiry)
+
+            if (now >= expiryTime) {
+                clearToken(true)
             } else {
-                setTokenState(storedToken);
+                setTokenState(storedToken)
+                const timeLeft = expiryTime - now
+
+                setTimeout(() => {
+                    clearToken(true)
+                }, timeLeft)
             }
         } else {
-            clearToken(false);
+            clearToken(false)
         }
 
-        setIsLoading(false);
-    }, []);
+        setIsLoading(false)
+    }, [clearToken])
 
     useEffect(() => {
-        let timeout: NodeJS.Timeout;
-        if (token) {
-            const expiryTime = 3600000;
-            timeout = setTimeout(() => {
-                clearToken();
-            }, expiryTime);
-        }
-        return () => clearTimeout(timeout);
-    }, [token]);
+        checkTokenValidity()
+    }, [checkTokenValidity])
 
+    // 🔒 Token yo‘q bo‘lsa, faqat login yoki register sahifasiga ruxsat beriladi
     useEffect(() => {
-        const publicRoutes = ["/login", "/register"];
-        if (!token && !publicRoutes.includes(location.pathname)) {
-            navigate("/login");
+        const publicRoutes = ["/login", "/register"]
+        const isPublic = publicRoutes.includes(location.pathname)
+
+        if (!token && !isPublic) {
+            navigate("/login")
         }
-    }, [location.pathname, token]);
 
-    useEffect(() => {
-        if (location.pathname === "/login" && token) {
-            clearToken(false);
+        if (token && location.pathname === "/login") {
+            navigate("/order")
         }
-    }, [location.pathname]);
+    }, [location.pathname, token, navigate])
 
-    const clearToken = (redirect: boolean = true) => {
-        localStorage.removeItem("token");
-        localStorage.removeItem("token_expiry");
-        setTokenState(null);
-        if (redirect) navigate("/login");
-    };
+    const setToken = useCallback(
+        (newToken: string | null) => {
+            if (newToken) {
+                const expiryTime = Date.now() + 60 * 60 * 1000 // 1 hour
+                localStorage.setItem("token", newToken)
+                localStorage.setItem("token_expiry", expiryTime.toString())
+                setTokenState(newToken)
 
-    const setToken = (newToken: string | null) => {
-        if (newToken) {
-            localStorage.setItem("token", newToken);
-            const expiryTime = Date.now() + 3600000;
-            localStorage.setItem("token_expiry", expiryTime.toString());
-        } else {
-            localStorage.removeItem("token");
-            localStorage.removeItem("token_expiry");
-        }
-        setTokenState(newToken);
-    };
+                setTimeout(() => {
+                    clearToken(true)
+                }, 60 * 60 * 1000)
+            } else {
+                clearToken(true)
+            }
+        },
+        [clearToken]
+    )
 
-    const logout = () => {
-        clearToken();
-    };
+    const logout = useCallback(() => {
+        clearToken(true)
+    }, [clearToken])
 
-    return (
-        <Context.Provider
-            value={{ token, setToken, showNavbar, setShowNavbar, isLoading, logout }}
-        >
-            {children}
-        </Context.Provider>
-    );
-};
+    const value = useMemo(
+        () => ({
+            token,
+            setToken,
+            showNavbar,
+            setShowNavbar,
+            isLoading,
+            logout,
+        }),
+        [token, setToken, showNavbar, setShowNavbar, isLoading, logout]
+    )
+
+    return <Context.Provider value={value}>{children}</Context.Provider>
+}

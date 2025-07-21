@@ -43,7 +43,7 @@ async function registerUser(
             name,
             email,
             password,
-            image: image || "default.png", // Agar rasm bo'lmasa, default qiymat
+            image: image || "default.png",
         });
 
         return response.data;
@@ -60,6 +60,29 @@ async function registerUser(
             throw new Error(error.message);
         } else {
             throw new Error("An unknown error occurred");
+        }
+    }
+}
+
+async function getProducts(params?: Record<string, any>) {
+    try {
+        const response = await api.get("/product", { params });
+        return response.data;
+    } catch (error: unknown) {
+        if (isAxiosError(error)) {
+            const data = error.response?.data as any;
+
+            if (data && typeof data.message === "string") {
+                throw new Error(data.message);
+            } else {
+                throw new Error("Product fetch failed");
+            }
+        } else if (error instanceof Error) {
+            throw new Error(error.message);
+        } else {
+            throw new Error(
+                "An unknown error occurred while fetching products"
+            );
         }
     }
 }

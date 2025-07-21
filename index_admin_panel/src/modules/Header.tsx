@@ -5,6 +5,7 @@ import { Dropdown, Button } from "antd"
 import { User, Globe, X, Check } from "lucide-react"
 import { languages, useLanguage } from "../service/language-contex"
 import { Context } from "../context/UserContext"
+import { useNavigate } from "react-router-dom"
 
 const Header = () => {
   const { t, currentLanguage, setLanguage } = useLanguage()
@@ -16,6 +17,7 @@ const Header = () => {
 
   const openModal = () => setIsModalOpen(true)
   const closeModal = () => setIsModalOpen(false)
+  const navigate = useNavigate()
 
   useEffect(() => {
     const name = localStorage.getItem("name")
@@ -31,6 +33,7 @@ const Header = () => {
     localStorage.removeItem("email")
     setToken(null) // Update global context token to null, which triggers redirection
     closeModal() // Close the modal immediately
+    navigate("/login")
   }
 
   const handleClickOutside = (event: MouseEvent) => {
@@ -50,7 +53,8 @@ const Header = () => {
   const adminData = {
     name: adminName || "Joe Melton",
     email: adminEmail || "joe.melon@intex-market.uz",
-    image: "/placeholder.svg?height=100&width=100",  }
+    image: "/placeholder.svg?height=100&width=100",
+  }
 
   return (
     <>
@@ -84,7 +88,7 @@ const Header = () => {
               <span>{languages[currentLanguage].name}</span>
             </Button>
           </Dropdown>
-          <span className="text-gray-300">|</span> 
+          <span className="text-gray-300">|</span>
           <a
             href="https://kun.uz/"
             target="_blank"
@@ -109,21 +113,21 @@ const Header = () => {
         <div
           className="fixed inset-0 flex items-center justify-center z-50"
           style={{
-            backgroundColor: "rgba(255, 255, 255, 0.15)", 
-            backdropFilter: "blur(8px)", 
+            backgroundColor: "rgba(255, 255, 255, 0.15)",
+            backdropFilter: "blur(8px)",
             animation: "modalFadeIn 0.4s ease-out",
           }}
         >
           <div
             className="modal-content bg-white/98 backdrop-blur-xl rounded-2xl shadow-2xl w-96 max-w-md mx-4 border border-gray-200/50 overflow-hidden"
             style={{ animation: "modalSlideUp 0.4s ease-out" }}
-            onClick={(e) => e.stopPropagation()} 
+            onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between p-6 bg-gradient-to-r from-[#009398] via-[#00a5aa] to-[#007a7f] text-white relative overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-shimmer"></div>
               <h2 className="text-xl font-bold relative z-10">{t("adminProfile")}</h2>
               <Button
-                type="text" 
+                type="text"
                 onClick={closeModal}
                 className="p-2 hover:bg-white/20 rounded-xl transition-all duration-200 relative z-10"
               >

@@ -46,6 +46,13 @@ model category {
   product  product[]
 }
 
+model consultation {
+  id       Int      @id @default(autoincrement())
+  name     String
+  phone    String
+  createAt DateTime @default(now())
+}
+
 // -------------------------------------
 
 enum role {

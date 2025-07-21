@@ -108,7 +108,7 @@ export class AuthService {
 
     const token = await this.jwt.signAsync(payload);
 
-    return `acces token: "${token}"`;
+    return `acces token: ${token}`;
   }
 
   async findAll(options: {

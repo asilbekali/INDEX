@@ -1,5 +1,4 @@
 "use client"
-
 import { createContext, useContext, useState, type ReactNode } from "react"
 
 // Define language types
@@ -20,7 +19,7 @@ type LanguageContextType = {
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined)
 
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
-  const [currentLanguage, setCurrentLanguage] = useState<LanguageCode>("uz") 
+  const [currentLanguage, setCurrentLanguage] = useState<LanguageCode>("uz")
 
   const t = (key: string) => {
     const translations: Record<LanguageCode, Record<string, string>> = {
@@ -51,7 +50,18 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
         quantity: "Quantity",
         frameType: "Frame Type",
         inflatable: "Inflatable",
-        depth: "Depth", 
+        depth: "Depth",
+        productName: "Product Name",
+        tall: "Tall",
+        productDeleted: "Product successfully deleted!",
+        productEdited: "Product successfully edited!",
+        productAdded: "Product successfully added!", // Added translation
+        confirmEditProductTitle: "Confirm Edit",
+        confirmEditProductMessage: "Are you sure you want to edit this product?",
+        confirmDeleteProductTitle: "Confirm Delete",
+        confirmDeleteProductMessage: "Are you sure you want to delete this product? This action cannot be undone.",
+        yes: "Yes",
+        no: "No",
       },
       uz: {
         products: "Mahsulotlar",
@@ -81,6 +91,17 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
         frameType: "Karkasli",
         inflatable: "Puflanadigan",
         depth: "Chuqurlik",
+        productName: "Mahsulot nomi",
+        tall: "Bo'yi",
+        productDeleted: "Mahsulot muvaffaqiyatli o'chirildi!",
+        productEdited: "Mahsulot muvaffaqiyatli o'zgartirildi!",
+        productAdded: "Mahsulot muvaffaqiyatli qo'shildi!", // Added translation
+        confirmEditProductTitle: "O'zgartirishni tasdiqlash",
+        confirmEditProductMessage: "Ushbu mahsulotni o'zgartirmoqchimisiz?",
+        confirmDeleteProductTitle: "O'chirishni tasdiqlash",
+        confirmDeleteProductMessage: "Ushbu mahsulotni o'chirmoqchimisiz? Bu amalni bekor qilib bo'lmaydi.",
+        yes: "Ha",
+        no: "Yo'q",
       },
       ru: {
         products: "Продукты",
@@ -109,7 +130,18 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
         quantity: "Количество",
         frameType: "Каркасные",
         inflatable: "Надувные",
-        depth: "Глубина", 
+        depth: "Глубина",
+        productName: "Название продукта",
+        tall: "Высота",
+        productDeleted: "Продукт успешно удален!",
+        productEdited: "Продукт успешно изменен!",
+        productAdded: "Продукт успешно добавлен!", // Added translation
+        confirmEditProductTitle: "Подтвердить изменение",
+        confirmEditProductMessage: "Вы уверены, что хотите изменить этот продукт?",
+        confirmDeleteProductTitle: "Подтвердить удаление",
+        confirmDeleteProductMessage: "Вы уверены, что хотите удалить этот продукт? Это действие необратимо.",
+        yes: "Да",
+        no: "Нет",
       },
     }
     return translations[currentLanguage][key] || key

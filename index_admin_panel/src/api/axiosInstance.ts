@@ -1,18 +1,26 @@
 import axios from "axios";
 
-const BASE_URL = import.meta.env.VITE_API;
-
 const api = axios.create({
-    baseURL: BASE_URL,
-    withCredentials: true,
-});
+    baseURL: import.meta.env.VITE_API,
+    headers: {
+        "Content-Type": "application/json",
+    },
+});import.meta.env.VITE_API
 
-api.interceptors.request.use((config) => {
-    const token = localStorage.getItem("token");
-    if (token && config.headers) {
-        config.headers.Authorization = `Bearer ${token}`;
+api.interceptors.request.use(
+    (config) => {
+        const token =
+            typeof window !== "undefined"
+                ? localStorage.getItem("token")?.trim()
+                : null;
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+        }
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
     }
-    return config;
-});
+);
 
 export default api;

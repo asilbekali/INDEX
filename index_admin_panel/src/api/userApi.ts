@@ -127,11 +127,43 @@ async function getProducts(params?: Record<string, any>, forceRefresh = false) {
     }
 }
 
+// New function for image upload
+async function uploadImageApi(file: File) {
+    try {
+        console.log("file manzili: ", file.name);
+        const formData = new FormData();
+        formData.append("file", file); // Changed from "image" to "file"
+        console.log(formData);
+        // Axios automatically sets Content-Type to multipart/form-data when FormData is used
+        const response = await api.post("/multer/upload", formData, {
+            headers: {
+                "Content-Type": "multipart/form-data", // This header is often automatically set by Axios when using FormData
+            },
+        });
+        return response.data; // Assuming response.data contains the filename or URL
+    } catch (error: unknown) {
+        if (isAxiosError(error)) {
+            const data = error.response?.data as any;
+            if (data && typeof data.message === "string") {
+                throw new Error(data.message);
+            } else {
+                throw new Error("Failed to upload image");
+            }
+        } else if (error instanceof Error) {
+            throw new Error(error.message);
+        } else {
+            throw new Error("An unknown error occurred while uploading image");
+        }
+    }
+}
+
 // Actual API call for adding a product
 async function addProductApi(productData: any) {
     try {
+        console.log("bu product", productData);
         const response = await api.post("/product", productData);
         console.log("Product added:", response.data);
+        console.log("token bul ", localStorage.getItem("token"));
         clearProductCache(); // Invalidate cache after adding
         return response.data;
     } catch (error: unknown) {
@@ -154,8 +186,7 @@ async function addProductApi(productData: any) {
 async function updateProductApi(productId: number, productData: any) {
     try {
         const response = await api.put(`/product/${productId}`, productData);
-        console.log("Product updated:", response.data);
-        clearProductCache(); // Invalidate cache after updating
+        clearProductCache();
         return response.data;
     } catch (error: unknown) {
         if (isAxiosError(error)) {
@@ -178,7 +209,7 @@ async function deleteProductApi(productId: number) {
     try {
         const response = await api.delete(`/product/${productId}`);
         console.log("Product deleted:", response.data);
-        clearProductCache(); // Invalidate cache after deleting
+        clearProductCache();
         return response.data;
     } catch (error: unknown) {
         if (isAxiosError(error)) {
@@ -208,4 +239,5 @@ export {
     addProductApi,
     updateProductApi,
     deleteProductApi,
+    uploadImageApi,
 };

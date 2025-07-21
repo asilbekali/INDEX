@@ -25,6 +25,7 @@ const initialCategoriesData: CategoryItem[] = [
 ]
 
 export default function Category() {
+  // Placeholder for language context, assuming it provides a 't' function
   const { t } = useLanguage() || {
     t: (key: string) => {
       const translations: { [key: string]: string } = {

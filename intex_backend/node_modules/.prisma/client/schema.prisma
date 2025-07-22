@@ -37,6 +37,7 @@ model product {
   categoryId Int
   category   category @relation(fields: [categoryId], references: [id])
   createAt   DateTime @default(now())
+  order      order[]
 }
 
 model category {
@@ -51,6 +52,16 @@ model consultation {
   name     String
   phone    String
   createAt DateTime @default(now())
+}
+
+model order {
+  id           Int      @id @default(autoincrement())
+  userName     String
+  userPhone    String
+  userLocation String
+  productId    Int
+  product      product  @relation(fields: [productId], references: [id])
+  createAt     DateTime @default(now())
 }
 
 // -------------------------------------

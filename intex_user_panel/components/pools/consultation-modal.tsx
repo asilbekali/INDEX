@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
-import type React from "react"
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { CheckCircle, Phone, User } from "lucide-react"
+import type React from "react";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { CheckCircle, Phone, User } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -13,70 +13,98 @@ import {
   DialogTitle,
   DialogDescription,
   DialogFooter,
-} from "@/components/ui/dialog"
+} from "@/components/ui/dialog";
 
 interface ConsultationModalProps {
-  isOpen: boolean
-  onClose: () => void
+  isOpen: boolean;
+  onClose: () => void;
 }
 
-export default function ConsultationModal({ isOpen, onClose }: ConsultationModalProps) {
-  const [formData, setFormData] = useState({ name: "", phone: "" })
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [submitSuccess, setSubmitSuccess] = useState(false)
+export default function ConsultationModal({
+  isOpen,
+  onClose,
+}: ConsultationModalProps) {
+  const [formData, setFormData] = useState({ name: "", phone: "" });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    if (!formData.name.trim() || !formData.phone.trim()) return
+    const target = e.target as HTMLFormElement;
+    const name = (
+      target.elements.namedItem("name") as HTMLInputElement
+    ).value.trim();
+    const phone = (
+      target.elements.namedItem("phone") as HTMLInputElement
+    ).value.trim();
 
-    setIsSubmitting(true)
+    if (!name || !phone) return;
 
-    setTimeout(() => {
-      setIsSubmitting(false)
-      setSubmitSuccess(true)
+    setIsSubmitting(true);
 
-      setFormData({ name: "", phone: "" })
+    try {
+      const response = await fetch("http://18.184.169.185/consultation", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, phone }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Server error");
+      }
+
+      setSubmitSuccess(true);
+      setFormData({ name: "", phone: "" });
 
       setTimeout(() => {
-        setSubmitSuccess(false)
-        onClose()
-      }, 3000)
-    }, 3000)
-  }
+        setSubmitSuccess(false);
+        onClose();
+      }, 3000);
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
-    setFormData((prev) => ({ ...prev, [name]: value }))
-  }
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
   const handleClose = () => {
     if (!isSubmitting) {
-      setSubmitSuccess(false)
-      setFormData({ name: "", phone: "" })
-      onClose()
+      setSubmitSuccess(false);
+      setFormData({ name: "", phone: "" });
+      onClose();
     }
-  }
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="bg-white sm:max-w-[425px] p-6 rounded-lg">
         {!submitSuccess ? (
           <>
-            <DialogHeader className="text-center"
-            style={{color:"#009398"}}>
-              <DialogTitle className="text-2xl font-bold">Konsultatsiya uchun bog'lanish</DialogTitle >
-              <DialogDescription className="text-gray-600">Iltimos, quyidagi formani to‘ldiring</DialogDescription>
+            <DialogHeader className="text-center" style={{ color: "#009398" }}>
+              <DialogTitle className="text-2xl font-bold">
+                Konsultatsiya uchun bog'lanish
+              </DialogTitle>
+              <DialogDescription className="text-gray-600">
+                Iltimos, quyidagi formani to‘ldiring
+              </DialogDescription>
             </DialogHeader>
 
             <form onSubmit={handleSubmit} className="space-y-4 py-4">
-              
               <div className="space-y-2">
-                <Label htmlFor="name" className="flex items-center gap-2"
-                style={{color:"#009398"}}>
-                  <User className="w-4 h-4"
-                  
-                   />
+                <Label
+                  htmlFor="name"
+                  className="flex items-center gap-2"
+                  style={{ color: "#009398" }}
+                >
+                  <User className="w-4 h-4" />
                   Ism
                 </Label>
                 <Input
@@ -91,8 +119,11 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="phone" className="flex items-center gap-2"
-                style={{color:"#009398"}}>
+                <Label
+                  htmlFor="phone"
+                  className="flex items-center gap-2"
+                  style={{ color: "#009398" }}
+                >
                   <Phone className="w-4 h-4" />
                   Telefon
                 </Label>
@@ -108,12 +139,21 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
               </div>
 
               <DialogFooter className="flex gap-2 pt-4">
-                <Button type="button" variant="outline" onClick={handleClose} disabled={isSubmitting}>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={handleClose}
+                  disabled={isSubmitting}
+                >
                   Bekor qilish
                 </Button>
                 <Button
                   type="submit"
-                  disabled={isSubmitting || !formData.name.trim() || !formData.phone.trim()}
+                  disabled={
+                    isSubmitting ||
+                    !formData.name.trim() ||
+                    !formData.phone.trim()
+                  }
                   style={{ backgroundColor: "#009398", color: "white" }}
                 >
                   {isSubmitting ? (
@@ -132,8 +172,12 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
           <>
             <DialogHeader className="text-center">
               <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
-              <DialogTitle className="text-2xl font-bold text-green-600">Muvaffaqiyatli yuborildi!</DialogTitle>
-              <DialogDescription className="text-gray-600">Tez orada siz bilan bog'lanamiz</DialogDescription>
+              <DialogTitle className="text-2xl font-bold text-green-600">
+                Muvaffaqiyatli yuborildi!
+              </DialogTitle>
+              <DialogDescription className="text-gray-600">
+                Tez orada siz bilan bog'lanamiz
+              </DialogDescription>
             </DialogHeader>
 
             <div className="flex justify-center py-4">
@@ -143,5 +187,5 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
         )}
       </DialogContent>
     </Dialog>
-  )
+  );
 }

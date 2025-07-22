@@ -31,7 +31,7 @@ const Login = () => {
 
     return (
         <div
-            style={{
+            style={{        
                 backgroundImage: "url('/Rectangle343.png')",
                 backgroundSize: "cover",
                 backgroundPosition: "center",

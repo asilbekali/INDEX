@@ -5,10 +5,10 @@ export declare class ConsultationService {
     private readonly prisma;
     constructor(prisma: PrismaService);
     create(createConsultationDto: CreateConsultationDto): Promise<{
-        id: number;
         name: string;
-        phone: string;
+        id: number;
         createAt: Date;
+        phone: string;
     }>;
     findAll(query: {
         page?: string;
@@ -16,31 +16,31 @@ export declare class ConsultationService {
         search?: string;
     }): Promise<{
         data: {
-            id: number;
             name: string;
-            phone: string;
+            id: number;
             createAt: Date;
+            phone: string;
         }[];
         total: number;
         page: number;
         lastPage: number;
     }>;
     findOne(id: number): Promise<{
-        id: number;
         name: string;
-        phone: string;
+        id: number;
         createAt: Date;
+        phone: string;
     }>;
     update(id: number, updateConsultationDto: UpdateConsultationDto): Promise<{
-        id: number;
         name: string;
-        phone: string;
+        id: number;
         createAt: Date;
+        phone: string;
     }>;
     remove(id: number): Promise<{
-        id: number;
         name: string;
-        phone: string;
+        id: number;
         createAt: Date;
+        phone: string;
     }>;
 }

@@ -40,7 +40,6 @@ let MulterService = class MulterService {
         if (!file) {
             throw new common_1.BadRequestException('File is required');
         }
-        console.log(file.filename);
         const imagePath = `${file.filename}`;
         return { message: 'File uploaded successfully', path: imagePath };
     }

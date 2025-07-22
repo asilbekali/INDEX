@@ -5,10 +5,10 @@ export declare class ConsultationController {
     private readonly consultationService;
     constructor(consultationService: ConsultationService);
     create(createConsultationDto: CreateConsultationDto): Promise<{
-        id: number;
         name: string;
-        phone: string;
+        id: number;
         createAt: Date;
+        phone: string;
     }>;
     findAll(query: {
         page?: string;
@@ -16,31 +16,31 @@ export declare class ConsultationController {
         search?: string;
     }): Promise<{
         data: {
-            id: number;
             name: string;
-            phone: string;
+            id: number;
             createAt: Date;
+            phone: string;
         }[];
         total: number;
         page: number;
         lastPage: number;
     }>;
     findOne(id: string): Promise<{
-        id: number;
         name: string;
-        phone: string;
+        id: number;
         createAt: Date;
+        phone: string;
     }>;
     update(id: string, updateConsultationDto: UpdateConsultationDto): Promise<{
-        id: number;
         name: string;
-        phone: string;
+        id: number;
         createAt: Date;
+        phone: string;
     }>;
     remove(id: string): Promise<{
-        id: number;
         name: string;
-        phone: string;
+        id: number;
         createAt: Date;
+        phone: string;
     }>;
 }

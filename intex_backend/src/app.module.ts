@@ -8,9 +8,10 @@ import { MulterModule } from './multe-r/multer.module';
 import { CategoryModule } from './category/category.module';
 import { ProductModule } from './product/product.module';
 import { ConsultationModule } from './consultation/consultation.module';
+import { OrderModule } from './order/order.module';
 
 @Module({
-  imports: [PrismaModule, AuthModule, MulterModule, CategoryModule, ProductModule, ConsultationModule],
+  imports: [PrismaModule, AuthModule, MulterModule, CategoryModule, ProductModule, ConsultationModule, OrderModule],
   controllers: [AppController],
   providers: [AppService, PrismaService],
 })

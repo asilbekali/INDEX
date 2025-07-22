@@ -1,4 +1,5 @@
 "use client"
+
 import type React from "react"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
@@ -20,68 +21,51 @@ interface ConsultationModalProps {
 }
 
 export default function ConsultationModal({ isOpen, onClose }: ConsultationModalProps) {
-  const [formData, setFormData] = useState({
-    name: "",
-    phone: "",
-  })
+  const [formData, setFormData] = useState({ name: "", phone: "" })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitSuccess, setSubmitSuccess] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault() // Bu muhim!
-    e.stopPropagation() // Bu ham qo'shdik
+    e.preventDefault()
 
-    // Validate form
-    if (!formData.name.trim() || !formData.phone.trim()) {
-      return
-    }
+    if (!formData.name.trim() || !formData.phone.trim()) return
 
     setIsSubmitting(true)
 
-    // Simulate API call
     setTimeout(() => {
       setIsSubmitting(false)
       setSubmitSuccess(true)
 
-      // Reset form
       setFormData({ name: "", phone: "" })
 
-      // Close modal after 2 seconds of showing success
       setTimeout(() => {
-        onClose()
         setSubmitSuccess(false)
-      }, 2000)
-    }, 1000)
+        onClose()
+      }, 3000)
+    }, 3000)
   }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }))
+    setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
   const handleClose = () => {
     if (!isSubmitting) {
+      setSubmitSuccess(false)
+      setFormData({ name: "", phone: "" })
       onClose()
-      // Reset states when modal closes
-      setTimeout(() => {
-        setSubmitSuccess(false)
-        setFormData({ name: "", phone: "" })
-      }, 300)
     }
   }
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-[425px] p-6 rounded-lg">
+      <DialogContent className="bg-white sm:max-w-[425px] p-6 rounded-lg">
         {!submitSuccess ? (
-          // Form State
           <>
             <DialogHeader className="text-center">
-              <DialogTitle className="text-2xl font-bold">Konsultatsiya so'rash</DialogTitle>
-              <DialogDescription className="text-gray-600">Konsultatsiya uchun formani to'ldiring</DialogDescription>
+              <DialogTitle className="text-2xl font-bold">Konsultatsiya uchun bog'lanish</DialogTitle>
+              <DialogDescription className="text-gray-600">Iltimos, quyidagi formani to‘ldiring</DialogDescription>
             </DialogHeader>
 
             <form onSubmit={handleSubmit} className="space-y-4 py-4">
@@ -97,7 +81,6 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
                   placeholder="Ismingizni kiriting"
                   value={formData.name}
                   onChange={handleInputChange}
-                  required
                   disabled={isSubmitting}
                 />
               </div>
@@ -111,10 +94,9 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
                   id="phone"
                   name="phone"
                   type="tel"
-                  placeholder="Telefon raqamingizni kiriting"
+                  placeholder="+998 90 123 45 67"
                   value={formData.phone}
                   onChange={handleInputChange}
-                  required
                   disabled={isSubmitting}
                 />
               </div>
@@ -126,7 +108,7 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
                 <Button
                   type="submit"
                   disabled={isSubmitting || !formData.name.trim() || !formData.phone.trim()}
-                  className="bg-blue-600 hover:bg-blue-700"
+                  style={{ backgroundColor: "#009398", color: "white" }}
                 >
                   {isSubmitting ? (
                     <div className="flex items-center gap-2">

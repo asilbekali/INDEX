@@ -4,11 +4,11 @@ import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, {
-    cors: {
-      origin: ['*'],
-      credentials: true,
-    },
+  const app = await NestFactory.create(AppModule);
+
+  app.enableCors({
+    origin: true,
+    credentials: true,
   });
 
   app.useGlobalPipes(new ValidationPipe());
@@ -17,8 +17,8 @@ async function bootstrap() {
     .setTitle('INDEX example')
     .setDescription('The INDEX API description')
     .setVersion('1.0')
-    .addSecurityRequirements('bearer', ['bearer'])
     .addBearerAuth()
+    .addSecurityRequirements('bearer', ['bearer'])
     .addTag('INDEX')
     .build();
 
@@ -29,7 +29,7 @@ async function bootstrap() {
   console.log(
     '\n\x1b[42m%s\x1b[0m\x1b[32m %s\x1b[0m\n',
     ' Swagger ',
-    'http://localhost:3000/api 🚀',
+    `http://localhost:${process.env.PORT ?? 3000}/api 🚀`,
   );
 }
 

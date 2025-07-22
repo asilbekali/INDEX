@@ -89,6 +89,16 @@ export const translations = {
     foundationSupport: "Foundation и Support Solutions",
     supportDescription: "Системная поддержка.",
     allRightsReserved: "Все права защищены",
+    freeDeliveryy: "Бесплатная доставка",
+    freeDeliveryFullDescc:
+      "Бесплатная доставка осуществляется в пределах города Ташкент (за пределами города доставка оплачивается отдельно)",
+    placeOrderr: "Оформить заказ",
+    getConsultationn: "Получить консультацию",
+    yourName: "Ваше имя",
+    yourPhone: "Ваш номер",
+    orderr: "Заказать",
+    thanks: "Спасибо!",
+    orderSuccesss: "Ваш заказ успешно оформлен. Мы свяжемся с вами в ближайшее время.",
   },
   uz: {
     framePoolsNav: "Ramkali hovuzlar",
@@ -180,5 +190,15 @@ export const translations = {
     foundationSupport: "Foundation va Support Solutions",
     supportDescription: "Bir tizimli yordamlar.",
     allRightsReserved: "Barcha huquqlar himoyalangan",
+    freeDeliveryy: "Bepul yetkazib berish",
+    freeDeliveryFullDescc:
+      "Bepul yetkazib berish Toshkent shahri doirasida amalga oshiriladi (shahar tashqarisida yetkazib berish alohida to'lanadi)",
+    placeOrderr: "Buyurtma berish",
+    getConsultationn: "Maslahat olish",
+    yourName: "Ismingiz",
+    yourPhone: "Telefon raqamingiz",
+    orderr: "Buyurtma berish",
+    thanks: "Rahmat!",
+    orderSuccesss: "Sizning buyurtmangiz muvaffaqiyatli rasmiylashtirildi. Biz siz bilan yaqin vaqtda bog'lanamiz.",
   },
 }

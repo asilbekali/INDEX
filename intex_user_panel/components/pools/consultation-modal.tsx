@@ -63,15 +63,20 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
       <DialogContent className="bg-white sm:max-w-[425px] p-6 rounded-lg">
         {!submitSuccess ? (
           <>
-            <DialogHeader className="text-center">
-              <DialogTitle className="text-2xl font-bold">Konsultatsiya uchun bog'lanish</DialogTitle>
+            <DialogHeader className="text-center"
+            style={{color:"#009398"}}>
+              <DialogTitle className="text-2xl font-bold">Konsultatsiya uchun bog'lanish</DialogTitle >
               <DialogDescription className="text-gray-600">Iltimos, quyidagi formani to‘ldiring</DialogDescription>
             </DialogHeader>
 
             <form onSubmit={handleSubmit} className="space-y-4 py-4">
+              
               <div className="space-y-2">
-                <Label htmlFor="name" className="flex items-center gap-2">
-                  <User className="w-4 h-4" />
+                <Label htmlFor="name" className="flex items-center gap-2"
+                style={{color:"#009398"}}>
+                  <User className="w-4 h-4"
+                  
+                   />
                   Ism
                 </Label>
                 <Input
@@ -86,7 +91,8 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="phone" className="flex items-center gap-2">
+                <Label htmlFor="phone" className="flex items-center gap-2"
+                style={{color:"#009398"}}>
                   <Phone className="w-4 h-4" />
                   Telefon
                 </Label>

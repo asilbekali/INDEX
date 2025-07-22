@@ -27,7 +27,7 @@ export default function Footer() {
             <h3 className="text-lg font-bold mb-4">{t("freeConsultationTitle")}</h3>
 
             <div className="space-y-3">
-              {/* <Input
+              <Input
                 name="name"
                 type="text"
                 placeholder={t("enterNamePlaceholder")}
@@ -40,7 +40,7 @@ export default function Footer() {
                 placeholder={t("enterPhonePlaceholder")}
                 className="bg-white text-black placeholder-gray-500"
                 required
-              /> */}
+              />
               <Button
                 type="button" 
                 className="w-full bg-yellow-accent text-black hover:bg-yellow-500 font-semibold"

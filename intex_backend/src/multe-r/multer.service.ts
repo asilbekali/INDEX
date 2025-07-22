@@ -41,18 +41,14 @@ export class MulterService {
       throw new BadRequestException('File is required');
     }
 
-    console.log(file.filename);
-    
-
     const imagePath = `${file.filename}`;
-    
 
     return { message: 'File uploaded successfully', path: imagePath };
   }
 
   findOne(filename: string) {
     console.log(filename);
-    
+
     const filePath = path.join(this.uploadPath, filename);
 
     if (!fs.existsSync(filePath)) {

@@ -54,7 +54,7 @@ export class MulterController {
   async getFile(@Param('filename') filename: string, @Res() res: Response) {
     const filePath = path.join('./uploads', filename);
     if (!fs.existsSync(filePath)) {
-      console.log(filePath);
+      filePath;
 
       return this.multerService.findOne(filePath);
     }

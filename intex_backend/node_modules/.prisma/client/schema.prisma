@@ -51,6 +51,7 @@ model consultation {
   id       Int      @id @default(autoincrement())
   name     String
   phone    String
+  status   checked  @default(active)
   createAt DateTime @default(now())
 }
 
@@ -60,11 +61,17 @@ model order {
   userPhone    String
   userLocation String
   productId    Int
+  status       checked  @default(active)
   product      product  @relation(fields: [productId], references: [id])
   createAt     DateTime @default(now())
 }
 
 // -------------------------------------
+
+enum checked {
+  active
+  NoActive
+}
 
 enum role {
   ADMIN

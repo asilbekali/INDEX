@@ -25,7 +25,14 @@ let OrderService = class OrderService {
             throw new common_1.NotFoundException('Bunday product topilmadi!');
         }
         return this.prisma.order.create({
-            data: createOrderDto,
+            data: {
+                userName: createOrderDto.userName,
+                userPhone: createOrderDto.userPhone,
+                userLocation: createOrderDto.userLocation,
+                product: {
+                    connect: { id: createOrderDto.productId },
+                },
+            },
         });
     }
     async findAll() {
@@ -60,9 +67,19 @@ let OrderService = class OrderService {
                 throw new common_1.NotFoundException('Yangilash uchun berilgan productId mavjud emas');
             }
         }
+        const updateData = {
+            userName: updateOrderDto.userName,
+            userPhone: updateOrderDto.userPhone,
+            userLocation: updateOrderDto.userLocation,
+        };
+        if (updateOrderDto.productId) {
+            updateData.product = {
+                connect: { id: updateOrderDto.productId },
+            };
+        }
         return this.prisma.order.update({
             where: { id },
-            data: updateOrderDto,
+            data: updateData,
         });
     }
     async remove(id) {

@@ -7,6 +7,7 @@ export declare class OrderService {
     create(createOrderDto: CreateOrderDto): Promise<{
         id: number;
         createAt: Date;
+        status: import(".prisma/client").$Enums.checked;
         userName: string;
         userPhone: string;
         userLocation: string;
@@ -30,6 +31,7 @@ export declare class OrderService {
     } & {
         id: number;
         createAt: Date;
+        status: import(".prisma/client").$Enums.checked;
         userName: string;
         userPhone: string;
         userLocation: string;
@@ -53,6 +55,7 @@ export declare class OrderService {
     } & {
         id: number;
         createAt: Date;
+        status: import(".prisma/client").$Enums.checked;
         userName: string;
         userPhone: string;
         userLocation: string;
@@ -61,6 +64,7 @@ export declare class OrderService {
     update(id: number, updateOrderDto: UpdateOrderDto): Promise<{
         id: number;
         createAt: Date;
+        status: import(".prisma/client").$Enums.checked;
         userName: string;
         userPhone: string;
         userLocation: string;
@@ -69,6 +73,7 @@ export declare class OrderService {
     remove(id: number): Promise<{
         id: number;
         createAt: Date;
+        status: import(".prisma/client").$Enums.checked;
         userName: string;
         userPhone: string;
         userLocation: string;

@@ -1,10 +1,19 @@
 "use client"
+
 import type React from "react"
 import { useState, useEffect, useCallback, useMemo } from "react"
 import { Search, Plus, Pencil, Trash2, ChevronLeft, ChevronRight, X, Upload, ImageIcon, Sparkles } from "lucide-react"
 import { useLanguage } from "../service/language-contex"
 import { useToast } from "../hooks/use-toaster"
-import { deleteProductApi, getProducts, updateProductApi, addProductApi, uploadImageApi, getCategoriesFromApi, getImageUrl } from "../api/userApi"
+import {
+  deleteProductApi,
+  getProducts,
+  updateProductApi,
+  addProductApi,
+  uploadImageApi,
+  getCategoriesFromApi,
+  getImageUrl,
+} from "../api/userApi"
 
 interface ProductItem {
   id: number
@@ -25,7 +34,6 @@ const IMAGE_BASE_URL = `http://18.184.169.185`
 
 const GlobalBackdrop: React.FC<{ isVisible: boolean; onClick: () => void }> = ({ isVisible, onClick }) => {
   if (!isVisible) return null
-
   return (
     <div
       className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity duration-500 ease-out"
@@ -44,7 +52,6 @@ const GlobalBackdrop: React.FC<{ isVisible: boolean; onClick: () => void }> = ({
   )
 }
 
-// Image Viewer Modal Component
 const ImageViewerModal: React.FC<{
   isOpen: boolean
   onClose: () => void
@@ -61,7 +68,6 @@ const ImageViewerModal: React.FC<{
       document.body.style.overflow = "unset"
       setIsVisible(false)
     }
-
     return () => {
       document.body.style.overflow = "unset"
     }
@@ -81,8 +87,9 @@ const ImageViewerModal: React.FC<{
       <GlobalBackdrop isVisible={isVisible} onClick={handleClose} />
       <div className="fixed inset-0 flex items-center justify-center p-4" style={{ zIndex: 100000 }}>
         <div
-          className={`relative bg-white rounded-2xl shadow-2xl max-w-4xl max-h-[90vh] overflow-hidden transform transition-all duration-500 ease-out ${isVisible ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-95 translate-y-8"
-            }`}
+          className={`relative bg-white rounded-2xl shadow-2xl max-w-4xl max-h-[90vh] overflow-hidden transform transition-all duration-500 ease-out ${
+            isVisible ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-95 translate-y-8"
+          }`}
         >
           <div className="flex items-center justify-between p-4 border-b border-gray-200">
             <h3 className="text-lg font-semibold text-gray-900">{productName}</h3>
@@ -103,22 +110,17 @@ const ImageViewerModal: React.FC<{
   )
 }
 
-// Edit Product Modal Component
-
-
-
 const EditProductModal: React.FC<{
-  isOpen: boolean;
-  onClose: () => void;
-  onProductUpdated: (updatedProduct: ProductItem) => void;
-  product: ProductItem | null;
+  isOpen: boolean
+  onClose: () => void
+  onProductUpdated: (updatedProduct: ProductItem) => void
+  product: ProductItem | null
 }> = ({ isOpen, onClose, onProductUpdated, product }) => {
-  const { toast } = useToast();
-  const { t } = useLanguage();
-  const [isVisible, setIsVisible] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [categories, setCategories] = useState<{ id: number; name: string }[]>([]);
-
+  const { toast } = useToast()
+  const { t } = useLanguage()
+  const [isVisible, setIsVisible] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [categories, setCategories] = useState<{ id: number; name: string }[]>([])
   const [formData, setFormData] = useState({
     name: "",
     price: "",
@@ -131,34 +133,29 @@ const EditProductModal: React.FC<{
     categoryId: "1",
     configuration1: "",
     configuration2: "",
-  });
-
-
+  })
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await getCategoriesFromApi();
-        setCategories(res.data);
+        const res = await getCategoriesFromApi()
+        setCategories(res.data)
       } catch (error) {
-        console.error("Kategoriya olishda xatolik:", error);
+        console.error("Kategoriya olishda xatolik:", error)
       }
-    };
-
-    if (isOpen) {
-      fetchCategories();
-      document.body.style.overflow = "hidden";
-      setTimeout(() => setIsVisible(true), 50);
-    } else {
-      document.body.style.overflow = "unset";
-      setIsVisible(false);
     }
-
+    if (isOpen) {
+      fetchCategories()
+      document.body.style.overflow = "hidden"
+      setTimeout(() => setIsVisible(true), 50)
+    } else {
+      document.body.style.overflow = "unset"
+      setIsVisible(false)
+    }
     return () => {
-      document.body.style.overflow = "unset";
-    };
-  }, [isOpen]);
-
+      document.body.style.overflow = "unset"
+    }
+  }, [isOpen])
 
   useEffect(() => {
     if (isOpen && product) {
@@ -174,27 +171,27 @@ const EditProductModal: React.FC<{
         categoryId: product.categoryId.toString() || "1",
         configuration1: "",
         configuration2: "",
-      });
-      document.body.style.overflow = "hidden";
-      setTimeout(() => setIsVisible(true), 50);
+      })
+      document.body.style.overflow = "hidden"
+      setTimeout(() => setIsVisible(true), 50)
     } else {
-      document.body.style.overflow = "unset";
-      setIsVisible(false);
+      document.body.style.overflow = "unset"
+      setIsVisible(false)
     }
     return () => {
-      document.body.style.overflow = "unset";
-    };
-  }, [isOpen, product]);
+      document.body.style.overflow = "unset"
+    }
+  }, [isOpen, product])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+    const { name, value } = e.target
+    setFormData((prev) => ({ ...prev, [name]: value }))
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!product) return;
-    setIsSubmitting(true);
+    e.preventDefault()
+    if (!product) return
+    setIsSubmitting(true)
     try {
       const updateData = {
         name: formData.name,
@@ -206,39 +203,40 @@ const EditProductModal: React.FC<{
         count: Number.parseInt(formData.count),
         status: formData.status,
         categoryId: Number.parseInt(formData.categoryId),
-      };
-
-      await updateProductApi(product.id, updateData);
-      onProductUpdated({ ...product, ...updateData });
+      }
+      await updateProductApi(product.id, updateData)
+      onProductUpdated({ ...product, ...updateData })
       toast({
         title: t("success") || "Success",
         description: t("productEdited") || "Product updated successfully!",
-      });
-      handleClose();
+      })
+      handleClose()
     } catch (error: any) {
       toast({
         title: t("error") || "Error",
         description: error.message || "Failed to update product",
         variant: "destructive",
-      });
+      })
     } finally {
-      setIsSubmitting(false);
+      setIsSubmitting(false)
     }
-  };
+  }
 
   const handleClose = () => {
-    setIsVisible(false);
-    setTimeout(() => onClose(), 300);
-  };
+    setIsVisible(false)
+    setTimeout(() => onClose(), 300)
+  }
 
-  if (!isOpen) return null;
+  if (!isOpen) return null
 
   return (
     <>
       <GlobalBackdrop isVisible={isVisible} onClick={handleClose} />
       <div className="fixed inset-0 flex items-center justify-center p-4" style={{ zIndex: 100000 }}>
         <div
-          className={`relative bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto transform transition-all duration-500 ease-out ${isVisible ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-95 translate-y-8"}`}
+          className={`relative bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto transform transition-all duration-500 ease-out ${
+            isVisible ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-95 translate-y-8"
+          }`}
         >
           <div className="flex items-center justify-between p-6 border-b border-gray-200">
             <div className="flex items-center space-x-4">
@@ -254,11 +252,12 @@ const EditProductModal: React.FC<{
               <X size={20} className="text-gray-500" />
             </button>
           </div>
-
           <form onSubmit={handleSubmit} className="p-6 space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-2">{t("productName") || "Название продукта"}</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  {t("productName") || "Название продукта"}
+                </label>
                 <input
                   type="text"
                   name="name"
@@ -270,37 +269,65 @@ const EditProductModal: React.FC<{
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">💰 {t("price") || "Цена (сум)"}</label>
-                <input type="number" name="price" value={formData.price} onChange={handleInputChange} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#009399]" required />
+                <input
+                  type="number"
+                  name="price"
+                  value={formData.price}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#009399]"
+                  required
+                />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">📦 {t("quantity") || "Количество"}</label>
-                <input type="number" name="count" value={formData.count} onChange={handleInputChange} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#009399]" required />
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  📦 {t("quantity") || "Количество"}
+                </label>
+                <input
+                  type="number"
+                  name="count"
+                  value={formData.count}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#009399]"
+                  required
+                />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">🖼️ {t("frame") || "Рамка"}</label>
-                <select name="frame" value={formData.frame} onChange={handleInputChange} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#009399]">
+                <select
+                  name="frame"
+                  value={formData.frame}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#009399]"
+                >
                   <option value="square">{t("square") || "square"}</option>
                   <option value="circle">{t("circle") || "circle"}</option>
                 </select>
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">📏 {t("size") || "Размер (м)"}</label>
-                <input type="number" step="0.1" name="size" value={formData.size} onChange={handleInputChange} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#009399]" required />
+                <input
+                  type="number"
+                  step="0.1"
+                  name="size"
+                  value={formData.size}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#009399]"
+                  required
+                />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">📐 {t("depth") || "Глубина(см)"}</label>
-                <input type="number" name="tall" value={formData.tall} onChange={handleInputChange} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#009399]" required />
+                <input
+                  type="number"
+                  name="tall"
+                  value={formData.tall}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#009399]"
+                  required
+                />
               </div>
-
-
-
-
-
-
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  🏷️ {t("category") || "Категория"}
-                </label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">🏷️ {t("category") || "Категория"}</label>
                 <select
                   name="categoryId"
                   value={formData.categoryId}
@@ -318,18 +345,27 @@ const EditProductModal: React.FC<{
                   ))}
                 </select>
               </div>
-
-
-
-
-
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">🎯 {t("discount") || "Скидка (%)"}</label>
-                <input type="number" name="discount" value={formData.discount} onChange={handleInputChange} max="100" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#009399]" />
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  🎯 {t("discount") || "Скидка (%)"}
+                </label>
+                <input
+                  type="number"
+                  name="discount"
+                  value={formData.discount}
+                  onChange={handleInputChange}
+                  max="100"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#009399]"
+                />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">⭐ {t("status") || "Статус"}</label>
-                <select name="status" value={formData.status} onChange={handleInputChange} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#009399]">
+                <select
+                  name="status"
+                  value={formData.status}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#009399]"
+                >
                   <option value="recomend">{t("recommend") || "Рекомендуем"}</option>
                   <option value="discount">{t("discount") || "Скидка"}</option>
                   <option value="end">{t("end") || "Заканчивается"}</option>
@@ -347,7 +383,9 @@ const EditProductModal: React.FC<{
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className={`px-8 py-3 bg-gradient-to-r from-[#009399] to-[#007a7f] text-white font-medium rounded-lg transition-all duration-300 transform hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed ${isSubmitting ? "animate-pulse" : "hover:shadow-lg"}`}
+                className={`px-8 py-3 bg-gradient-to-r from-[#009399] to-[#007a7f] text-white font-medium rounded-lg transition-all duration-300 transform hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed ${
+                  isSubmitting ? "animate-pulse" : "hover:shadow-lg"
+                }`}
               >
                 {isSubmitting ? (
                   <div className="flex items-center space-x-2">
@@ -366,292 +404,17 @@ const EditProductModal: React.FC<{
         </div>
       </div>
     </>
-  );
-};
-
-
-
-
-
-
-// const EditProductModal: React.FC<{
-//   isOpen: boolean
-//   onClose: () => void
-//   onProductUpdated: (updatedProduct: ProductItem) => void
-//   product: ProductItem | null
-// }> = ({ isOpen, onClose, onProductUpdated, product }) => {
-//   const { toast } = useToast()
-//   const { t } = useLanguage()
-//   const [isVisible, setIsVisible] = useState(false)
-//   const [formData, setFormData] = useState({
-//     name: "",
-//     price: "",
-//     discount: "",
-//     frame: "square",
-//     size: "",
-//     tall: "",
-//     count: "",
-//     status: "recomend",
-//     categoryId: "1",
-//     configuration1: "",
-//     configuration2: "",
-//   })
-//   const [isSubmitting, setIsSubmitting] = useState(false)
-
-//   useEffect(() => {
-//     if (isOpen && product) {
-//       setFormData({
-//         name: product.name || "",
-//         price: product.price.toString() || "",
-//         discount: product.discount?.toString() || "",
-//         frame: product.frame || "square",
-//         size: product.size.toString() || "",
-//         tall: product.tall.toString() || "",
-//         count: product.count.toString() || "",
-//         status: product.status || "recomend",
-//         categoryId: product.categoryId.toString() || "1",
-//         configuration1: "",
-//         configuration2: "",
-//       })
-//       document.body.style.overflow = "hidden"
-//       setTimeout(() => setIsVisible(true), 50)
-//     } else {
-//       document.body.style.overflow = "unset"
-//       setIsVisible(false)
-//     }
-
-//     return () => {
-//       document.body.style.overflow = "unset"
-//     }
-//   }, [isOpen, product])
-
-//   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-//     const { name, value } = e.target
-//     setFormData((prev) => ({
-//       ...prev,
-//       [name]: value,
-//     }))
-//   }
-
-//   const handleSubmit = async (e: React.FormEvent) => {
-//     e.preventDefault()
-//     if (!product) return
-
-//     setIsSubmitting(true)
-//     try {
-//       const updateData = {
-//         name: formData.name,
-//         price: Number.parseFloat(formData.price),
-//         discount: formData.discount ? Number.parseFloat(formData.discount) : undefined,
-//         frame: formData.frame,
-//         size: Number.parseFloat(formData.size),
-//         tall: Number.parseFloat(formData.tall),
-//         count: Number.parseInt(formData.count),
-//         status: formData.status,
-//         categoryId: Number.parseInt(formData.categoryId),
-//       }
-
-//       await updateProductApi(product.id, updateData)
-
-//       const updatedProduct = {
-//         ...product,
-//         ...updateData,
-//       }
-
-//       onProductUpdated(updatedProduct)
-//       toast({
-//         title: t("success") || "Success",
-//         description: t("productEdited") || "Product updated successfully!",
-//       })
-//       handleClose()
-//     } catch (error: any) {
-//       toast({
-//         title: t("error") || "Error",
-//         description: error.message || "Failed to update product",
-//         variant: "destructive",
-//       })
-//     } finally {
-//       setIsSubmitting(false)
-//     }
-//   }
-
-//   const handleClose = () => {
-//     setIsVisible(false)
-//     setTimeout(() => {
-//       onClose()
-//     }, 300)
-//   }
-
-//   if (!isOpen) return null
-
-//   return (
-//     <>
-//       <GlobalBackdrop isVisible={isVisible} onClick={handleClose} />
-//       <div className="fixed inset-0 flex items-center justify-center p-4" style={{ zIndex: 100000 }}>
-//         <div
-//           className={`relative bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto transform transition-all duration-500 ease-out ${isVisible ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-95 translate-y-8"
-//             }`}
-//         >
-//           <div className="flex items-center justify-between p-6 border-b border-gray-200">
-//             <h2 className="text-xl font-semibold text-gray-900">{t("editProduct") || "Редактировать продукт"}</h2>
-//             <button onClick={handleClose} className="p-2 hover:bg-gray-100 rounded-lg transition-colors duration-200">
-//               <X size={20} className="text-gray-500" />
-//             </button>
-//           </div>
-
-//           <form onSubmit={handleSubmit} className="p-6 space-y-6">
-//             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-//               <div>
-//                 <label className="block text-sm font-medium text-gray-700 mb-2">{t("categories") || "Категории"}</label>
-//                 <select
-//                   name="categoryId"
-//                   value={formData.categoryId}
-//                   onChange={handleInputChange}
-//                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#009399] focus:border-transparent transition-all duration-200"
-//                 >
-//                   <option value="1">{t("frameType") || "Каркасные"}</option>
-//                   <option value="2">{t("inflatable") || "Надувные"}</option>
-//                 </select>
-//               </div>
-
-//               <div>
-//                 <label className="block text-sm font-medium text-gray-700 mb-2">{t("quantity") || "Количество"}</label>
-//                 <input
-//                   type="number"
-//                   name="count"
-//                   value={formData.count}
-//                   onChange={handleInputChange}
-//                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#009399] focus:border-transparent transition-all duration-200"
-//                   required
-//                 />
-//               </div>
-
-//               <div>
-//                 <label className="block text-sm font-medium text-gray-700 mb-2">
-//                   {t("startPrice") || "Стартая цена (сум)"}
-//                 </label>
-//                 <input
-//                   type="number"
-//                   name="price"
-//                   value={formData.price}
-//                   onChange={handleInputChange}
-//                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#009399] focus:border-transparent transition-all duration-200"
-//                   required
-//                 />
-//               </div>
-
-//               <div>
-//                 <label className="block text-sm font-medium text-gray-700 mb-2">
-//                   {t("discountPrice") || "Цена со скидкой (сум)"}
-//                 </label>
-//                 <input
-//                   type="number"
-//                   name="discount"
-//                   value={formData.discount}
-//                   onChange={handleInputChange}
-//                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#009399] focus:border-transparent transition-all duration-200"
-//                 />
-//               </div>
-
-//               <div>
-//                 <label className="block text-sm font-medium text-gray-700 mb-2">{t("frame") || "Рамка"}</label>
-//                 <input
-//                   type="text"
-//                   name="frame"
-//                   value={formData.frame}
-//                   onChange={handleInputChange}
-//                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#009399] focus:border-transparent transition-all duration-200"
-//                   required
-//                 />
-//               </div>
-
-
-
-//               <div>
-//                 <label className="block text-sm font-medium text-gray-700 mb-2">{t("size") || "Размер (м)"}</label>
-//                 <input
-//                   type="number"
-//                   step="0.1"
-//                   name="size"
-//                   value={formData.size}
-//                   onChange={handleInputChange}
-//                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#009399] focus:border-transparent transition-all duration-200"
-//                   required
-//                 />
-//               </div>
-
-//               <div>
-//                 <label className="block text-sm font-medium text-gray-700 mb-2">{t("depth") || "Глубина(см)"}</label>
-//                 <input
-//                   type="number"
-//                   name="tall"
-//                   value={formData.tall}
-//                   onChange={handleInputChange}
-//                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#009399] focus:border-transparent transition-all duration-200"
-//                   required
-//                 />
-//               </div>
-//             </div>
-
-//             <div>
-//               <label className="block text-sm font-medium text-gray-700 mb-2">
-//                 {t("productName") || "Название продукта"}
-//               </label>
-//               <input
-//                 type="text"
-//                 name="name"
-//                 value={formData.name}
-//                 onChange={handleInputChange}
-//                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#009399] focus:border-transparent transition-all duration-200"
-//                 required
-//               />
-//             </div>
-
-//             <div>
-//               <label className="block text-sm font-medium text-gray-700 mb-2">{t("status") || "Статус"}</label>
-//               <select
-//                 name="status"
-//                 value={formData.status}
-//                 onChange={handleInputChange}
-//                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#009399] focus:border-transparent transition-all duration-200"
-//               >
-//                 <option value="recomend">{t("recommend") || "Рекомендуем"}</option>
-//                 <option value="discount">{t("popular") || "Популярный"}</option>
-//                 <option value="end">{t("new") || "Новый"}</option>
-//               </select>
-//             </div>
-
-//             <div className="flex justify-end pt-6">
-//               <button
-//                 type="submit"
-//                 disabled={isSubmitting}
-//                 className={`px-8 py-3 bg-[#009399] text-white rounded-lg font-medium transition-all duration-300 transform hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed ${isSubmitting ? "animate-pulse" : "hover:bg-[#007a7f]"
-//                   }`}
-//               >
-//                 {isSubmitting ? t("updating") || "Обновление..." : t("update") || "Обновить"}
-//               </button>
-//             </div>
-//           </form>
-//         </div>
-//       </div>
-//     </>
-//   )
-// }
-
-// Add Product Modal Component
-
-
-
+  )
+}
 
 const AddProductModal: React.FC<{
-  isOpen: boolean;
-  onClose: () => void;
-  onProductAdded: (newProduct: ProductItem) => void;
+  isOpen: boolean
+  onClose: () => void
+  onProductAdded: (newProduct: ProductItem) => void
 }> = ({ isOpen, onClose, onProductAdded }) => {
-  const { toast } = useToast();
-  const { t } = useLanguage();
-
-  const [isVisible, setIsVisible] = useState(false);
+  const { toast } = useToast()
+  const { t } = useLanguage()
+  const [isVisible, setIsVisible] = useState(false)
   const [formData, setFormData] = useState({
     name: "",
     price: "",
@@ -664,119 +427,110 @@ const AddProductModal: React.FC<{
     categoryId: "",
     configuration1: "",
     configuration2: "",
-  });
-
-  const [categories, setCategories] = useState<{ id: number; name: string }[]>([]);
-  const [selectedImage, setSelectedImage] = useState<File | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [dragActive, setDragActive] = useState(false);
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  })
+  const [categories, setCategories] = useState<{ id: number; name: string }[]>([])
+  const [selectedImage, setSelectedImage] = useState<File | null>(null)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [dragActive, setDragActive] = useState(false)
+  const [selectedFile, setSelectedFile] = useState<File | null>(null)
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await getCategoriesFromApi();
-        setCategories(res.data);
+        const res = await getCategoriesFromApi()
+        setCategories(res.data)
       } catch (error) {
-        console.error("Kategoriya olishda xatolik:", error);
+        console.error("Kategoriya olishda xatolik:", error)
       }
-    };
-
-    if (isOpen) {
-      fetchCategories();
-      document.body.style.overflow = "hidden";
-      setTimeout(() => setIsVisible(true), 50);
-    } else {
-      document.body.style.overflow = "unset";
-      setIsVisible(false);
     }
-
+    if (isOpen) {
+      fetchCategories()
+      document.body.style.overflow = "hidden"
+      setTimeout(() => setIsVisible(true), 50)
+    } else {
+      document.body.style.overflow = "unset"
+      setIsVisible(false)
+    }
     return () => {
-      document.body.style.overflow = "unset";
-    };
-  }, [isOpen]);
+      document.body.style.overflow = "unset"
+    }
+  }, [isOpen])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target
     setFormData((prev) => ({
       ...prev,
       [name]: value,
-    }));
-  };
+    }))
+  }
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      setSelectedImage(e.target.files[0]);
-      setSelectedFile(e.target.files[0]);
+      setSelectedImage(e.target.files[0])
+      setSelectedFile(e.target.files[0])
     }
-  };
+  }
 
   const handleDrag = (e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
+    e.preventDefault()
+    e.stopPropagation()
     if (e.type === "dragenter" || e.type === "dragover") {
-      setDragActive(true);
+      setDragActive(true)
     } else if (e.type === "dragleave") {
-      setDragActive(false);
+      setDragActive(false)
     }
-  };
+  }
 
   const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragActive(false);
+    e.preventDefault()
+    e.stopPropagation()
+    setDragActive(false)
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      setSelectedImage(e.dataTransfer.files[0]);
-      setSelectedFile(e.dataTransfer.files[0]);
+      setSelectedImage(e.dataTransfer.files[0])
+      setSelectedFile(e.dataTransfer.files[0])
     }
-  };
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-
+    e.preventDefault()
+    setIsSubmitting(true)
     try {
-      let imageUrl = "";
+      let imageUrl = ""
       if (selectedImage) {
-
-        const imageResponse = await uploadImageApi(selectedImage);
+        const imageResponse = await uploadImageApi(selectedImage)
         imageUrl = getImageUrl(imageResponse.path)
       }
 
-
-
       const productData = {
         name: formData.name,
-        price: parseFloat(formData.price),
-        discount: formData.discount ? parseFloat(formData.discount) : undefined,
+        price: Number.parseFloat(formData.price),
+        discount: formData.discount ? Number.parseFloat(formData.discount) : undefined,
         frame: formData.frame,
-        size: parseFloat(formData.size),
-        tall: parseFloat(formData.tall),
-        count: parseInt(formData.count),
+        size: Number.parseFloat(formData.size),
+        tall: Number.parseFloat(formData.tall),
+        count: Number.parseInt(formData.count),
         status: formData.status,
-        categoryId: parseInt(formData.categoryId),
+        categoryId: Number.parseInt(formData.categoryId),
         image: imageUrl,
-      };
-
-
-      const response = await addProductApi(productData);
-      onProductAdded(response);
+      }
+      const response = await addProductApi(productData)
+      onProductAdded(response)
       toast({
         title: t("success") || "Success",
         description: t("productAdded") || "Product added successfully!",
-      });
-      handleClose();
-      resetForm();
+      })
+      handleClose()
+      resetForm()
     } catch (error: any) {
       toast({
         title: t("error") || "Error",
         description: error.message || "Failed to add product",
         variant: "destructive",
-      });
+      })
     } finally {
-      setIsSubmitting(false);
+      setIsSubmitting(false)
     }
-  };
+  }
 
   const resetForm = () => {
     setFormData({
@@ -791,27 +545,28 @@ const AddProductModal: React.FC<{
       categoryId: "",
       configuration1: "",
       configuration2: "",
-    });
-    setSelectedImage(null);
-    setSelectedFile(null);
-  };
+    })
+    setSelectedImage(null)
+    setSelectedFile(null)
+  }
 
   const handleClose = () => {
-    setIsVisible(false);
+    setIsVisible(false)
     setTimeout(() => {
-      onClose();
-    }, 300);
-  };
+      onClose()
+    }, 300)
+  }
 
-  if (!isOpen) return null;
+  if (!isOpen) return null
 
   return (
     <>
       <GlobalBackdrop isVisible={isVisible} onClick={handleClose} />
       <div className="fixed inset-0 flex items-center justify-center p-4" style={{ zIndex: 100000 }}>
         <div
-          className={`relative bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto transform transition-all duration-500 ease-out ${isVisible ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-95 translate-y-8"
-            }`}
+          className={`relative bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto transform transition-all duration-500 ease-out ${
+            isVisible ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-95 translate-y-8"
+          }`}
         >
           <div className="flex items-center justify-between p-6 border-b border-gray-200">
             <div className="flex items-center space-x-4">
@@ -827,7 +582,6 @@ const AddProductModal: React.FC<{
               <X size={20} className="text-gray-500" />
             </button>
           </div>
-
           <form onSubmit={handleSubmit} className="p-6 space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="md:col-span-2">
@@ -844,16 +598,16 @@ const AddProductModal: React.FC<{
                   required
                 />
               </div>
-
               <div className="md:col-span-2">
                 <label className="block text-sm font-medium text-gray-700 mb-2">{t("image") || "Изображение"} 📸</label>
                 <div
-                  className={`relative border-2 border-dashed rounded-lg p-6 transition-all duration-300 ${dragActive
-                    ? "border-[#009399] bg-[#009399]/10"
-                    : selectedImage
-                      ? "border-green-300 bg-green-50"
-                      : "border-gray-300 hover:border-[#009399]/50"
-                    }`}
+                  className={`relative border-2 border-dashed rounded-lg p-6 transition-all duration-300 ${
+                    dragActive
+                      ? "border-[#009399] bg-[#009399]/10"
+                      : selectedImage
+                        ? "border-green-300 bg-green-50"
+                        : "border-gray-300 hover:border-[#009399]/50"
+                  }`}
                   onDragEnter={handleDrag}
                   onDragLeave={handleDrag}
                   onDragOver={handleDrag}
@@ -868,8 +622,9 @@ const AddProductModal: React.FC<{
                   />
                   <div className="text-center">
                     <div
-                      className={`mx-auto w-12 h-12 rounded-lg flex items-center justify-center mb-4 ${selectedImage ? "bg-green-500" : dragActive ? "bg-[#009399]" : "bg-gray-100"
-                        }`}
+                      className={`mx-auto w-12 h-12 rounded-lg flex items-center justify-center mb-4 ${
+                        selectedImage ? "bg-green-500" : dragActive ? "bg-[#009399]" : "bg-gray-100"
+                      }`}
                     >
                       {selectedImage ? (
                         <ImageIcon className="w-6 h-6 text-white" />
@@ -894,7 +649,6 @@ const AddProductModal: React.FC<{
                   </div>
                 </div>
               </div>
-
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">💰 {t("price") || "Цена (сум)"}</label>
                 <input
@@ -906,7 +660,6 @@ const AddProductModal: React.FC<{
                   required
                 />
               </div>
-
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   📦 {t("quantity") || "Количество"}
@@ -920,9 +673,6 @@ const AddProductModal: React.FC<{
                   required
                 />
               </div>
-
-
-
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">🖼️ {t("frame") || "Рамка"}</label>
                 <select
@@ -936,7 +686,6 @@ const AddProductModal: React.FC<{
                   <option value="circle">{t("circle") || "circle"}</option>
                 </select>
               </div>
-
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">📏 {t("size") || "Размер (м)"}</label>
                 <input
@@ -949,7 +698,6 @@ const AddProductModal: React.FC<{
                   required
                 />
               </div>
-
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">📐 {t("depth") || "Глубина(см)"}</label>
                 <input
@@ -961,12 +709,8 @@ const AddProductModal: React.FC<{
                   required
                 />
               </div>
-
-
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  🏷️ {t("category") || "Категория"}
-                </label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">🏷️ {t("category") || "Категория"}</label>
                 <select
                   name="categoryId"
                   value={formData.categoryId}
@@ -984,11 +728,7 @@ const AddProductModal: React.FC<{
                   ))}
                 </select>
               </div>
-
-
               {/* /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */}
-
-
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   🎯 {t("discount") || "Скидка (%)"}
@@ -1002,7 +742,6 @@ const AddProductModal: React.FC<{
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#009399] focus:border-transparent transition-all duration-200"
                 />
               </div>
-
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">⭐ {t("status") || "Статус"}</label>
                 <select
@@ -1017,7 +756,6 @@ const AddProductModal: React.FC<{
                 </select>
               </div>
             </div>
-
             <div className="flex justify-end space-x-4 pt-6">
               <button
                 type="button"
@@ -1029,8 +767,9 @@ const AddProductModal: React.FC<{
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className={`px-8 py-3 bg-gradient-to-r from-[#009399] to-[#007a7f] text-white font-medium rounded-lg transition-all duration-300 transform hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed ${isSubmitting ? "animate-pulse" : "hover:shadow-lg"
-                  }`}
+                className={`px-8 py-3 bg-gradient-to-r from-[#009399] to-[#007a7f] text-white font-medium rounded-lg transition-all duration-300 transform hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed ${
+                  isSubmitting ? "animate-pulse" : "hover:shadow-lg"
+                }`}
               >
                 {isSubmitting ? (
                   <div className="flex items-center space-x-2">
@@ -1052,7 +791,6 @@ const AddProductModal: React.FC<{
   )
 }
 
-// Main Product List Component
 const ProductList: React.FC = () => {
   const { t } = useLanguage()
   const { toast } = useToast()
@@ -1086,6 +824,7 @@ const ProductList: React.FC = () => {
     const handler = setTimeout(() => {
       setDebouncedSearchTerm(searchTerm)
     }, 300)
+
     return () => {
       clearTimeout(handler)
     }
@@ -1096,7 +835,6 @@ const ProductList: React.FC = () => {
     setError(null)
     try {
       const response = await getProducts({ page: 1, limit: Number.MAX_SAFE_INTEGER })
-
       if (response && Array.isArray(response.data)) {
         setAllProductsCache(response.data)
       } else {
@@ -1126,6 +864,7 @@ const ProductList: React.FC = () => {
     } else if (activeTab === "inflatable") {
       tempProducts = tempProducts.filter((p) => p.frame === "circle")
     }
+
     if (debouncedSearchTerm) {
       const lowerCaseSearchTerm = debouncedSearchTerm.toLowerCase()
       tempProducts = tempProducts.filter((p) => p.name.toLowerCase().includes(lowerCaseSearchTerm))
@@ -1155,7 +894,6 @@ const ProductList: React.FC = () => {
 
   const showConfirmModal = (productId: number, type: "edit" | "delete") => {
     const product = allProductsCache.find((p) => p.id === productId)
-
     if (type === "edit" && product) {
       setSelectedProduct(product)
       setIsEditModalVisible(true)
@@ -1273,12 +1011,14 @@ const ProductList: React.FC = () => {
 
   return (
     <div
-      className={`flex flex-col h-full p-6 bg-gray-50 min-h-screen transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-        }`}
+      className={`flex flex-col h-full p-6 bg-gray-50 min-h-screen transition-all duration-1000 ${
+        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+      }`}
     >
       <div
-        className={`flex items-center justify-between mb-8 transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-          }`}
+        className={`flex items-center justify-between mb-8 transition-all duration-700 ${
+          isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+        }`}
         style={{ transitionDelay: "200ms" }}
       >
         <div className="relative w-full max-w-md group">
@@ -1305,15 +1045,17 @@ const ProductList: React.FC = () => {
       </div>
 
       <div
-        className={`flex border-b border-gray-200 mb-8 bg-white rounded-t-2xl shadow-sm overflow-hidden transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-          }`}
+        className={`flex border-b border-gray-200 mb-8 bg-white rounded-t-2xl shadow-sm overflow-hidden transition-all duration-700 ${
+          isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+        }`}
       >
         <button
           onClick={() => setActiveTab("frameType")}
-          className={`px-8 py-4 text-lg font-semibold transition-all duration-300 relative group overflow-hidden ${activeTab === "frameType"
-            ? "text-[#009399] bg-[#009399]/5"
-            : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
-            }`}
+          className={`px-8 py-4 text-lg font-semibold transition-all duration-300 relative group overflow-hidden ${
+            activeTab === "frameType"
+              ? "text-[#009399] bg-[#009399]/5"
+              : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
+          }`}
         >
           <span className="relative z-10">{t("frameType") || "Frame Type"}</span>
           {activeTab === "frameType" && (
@@ -1323,10 +1065,11 @@ const ProductList: React.FC = () => {
         </button>
         <button
           onClick={() => setActiveTab("inflatable")}
-          className={`px-8 py-4 text-lg font-semibold transition-all duration-300 relative group overflow-hidden ${activeTab === "inflatable"
-            ? "text-[#009399] bg-[#009399]/5"
-            : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
-            }`}
+          className={`px-8 py-4 text-lg font-semibold transition-all duration-300 relative group overflow-hidden ${
+            activeTab === "inflatable"
+              ? "text-[#009399] bg-[#009399]/5"
+              : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
+          }`}
         >
           <span className="relative z-10">{t("inflatable") || "Inflatable"}</span>
           {activeTab === "inflatable" && (
@@ -1338,8 +1081,9 @@ const ProductList: React.FC = () => {
 
       {productsToDisplay.length > 0 ? (
         <div
-          className={`bg-white rounded-2xl shadow-lg overflow-hidden transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-            }`}
+          className={`bg-white rounded-2xl shadow-lg overflow-hidden transition-all duration-700 ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+          }`}
         >
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200 table-fixed">
@@ -1375,17 +1119,14 @@ const ProductList: React.FC = () => {
                 {productsToDisplay.map((product, index) => {
                   const currentPrice = product.price * (1 - (product.discount || 0) / 100)
                   const oldPrice = calculateOldPrice(product.price, product.discount)
-                  const imageUrl = product.image
-                    ? product.image
-                    : `${IMAGE_BASE_URL}${product.image}`
-
+                  const imageUrl = product.image ? product.image : `${IMAGE_BASE_URL}${product.image}` // This line seems to have a potential issue if product.image is already a full URL.
                   const isAnimating = animatingRows.has(product.id)
-
                   return (
                     <tr
                       key={product.id}
-                      className={`hover:bg-gray-50/50 transition-colors duration-200 ${isAnimating ? "animate-pulse bg-red-50" : ""
-                        }`}
+                      className={`hover:bg-gray-50/50 transition-colors duration-200 ${
+                        isAnimating ? "animate-pulse bg-red-50" : ""
+                      }`}
                       style={{
                         animationDelay: `${index * 100}ms`,
                         opacity: isVisible ? 1 : 0,
@@ -1406,13 +1147,11 @@ const ProductList: React.FC = () => {
                           <div className="absolute inset-0 bg-black/20 opacity-0 group-hover/image:opacity-100 transition-opacity duration-300 rounded-xl" />
                         </div>
                       </td>
-
                       <td className="w-48 px-4 py-4">
                         <div className="font-medium text-gray-900 hover:text-[#009399] transition-colors duration-300 cursor-pointer truncate">
                           {product.name}
                         </div>
                       </td>
-
                       <td className="w-32 px-4 py-4">
                         <div className="flex flex-col">
                           {oldPrice && (
@@ -1425,24 +1164,20 @@ const ProductList: React.FC = () => {
                           </span>
                         </div>
                       </td>
-
                       <td className="w-24 px-4 py-4">
                         <span
-                          className={`inline-flex px-2 py-1 rounded-full text-xs font-medium transition-all duration-300 whitespace-nowrap ${product.count > 0 ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
-                            }`}
+                          className={`inline-flex px-2 py-1 rounded-full text-xs font-medium transition-all duration-300 whitespace-nowrap ${
+                            product.count > 0 ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
+                          }`}
                         >
                           {product.count}
                         </span>
                       </td>
-
                       <td className="w-32 px-4 py-4">
                         <span className="capitalize text-gray-700 text-sm truncate block">{product.frame}</span>
                       </td>
-
                       <td className="w-24 px-4 py-4 text-gray-700 text-sm">{product.size}</td>
-
                       <td className="w-24 px-4 py-4 text-gray-700 text-sm">{product.tall}</td>
-
                       <td className="w-28 px-4 py-4">
                         <div className="flex items-center space-x-2">
                           <button
@@ -1497,10 +1232,11 @@ const ProductList: React.FC = () => {
                     <button
                       key={pageNumber}
                       onClick={() => setCurrentPage(pageNumber)}
-                      className={`px-4 py-2 rounded-xl transition-all duration-300 ${pageNumber === currentPage
-                        ? "bg-[#009399] text-white shadow-lg"
-                        : "border border-gray-300 text-gray-700 hover:bg-gray-100"
-                        }`}
+                      className={`px-4 py-2 rounded-xl transition-all duration-300 ${
+                        pageNumber === currentPage
+                          ? "bg-[#009399] text-white shadow-lg"
+                          : "border border-gray-300 text-gray-700 hover:bg-gray-100"
+                      }`}
                     >
                       {pageNumber}
                     </button>
@@ -1520,8 +1256,9 @@ const ProductList: React.FC = () => {
         </div>
       ) : (
         <div
-          className={`flex flex-col items-center justify-center h-64 bg-white rounded-2xl shadow-lg transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-            }`}
+          className={`flex flex-col items-center justify-center h-64 bg-white rounded-2xl shadow-lg transition-all duration-700 ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+          }`}
         >
           <div className="text-gray-400 mb-4 animate-bounce">
             <Search size={48} />
@@ -1533,16 +1270,13 @@ const ProductList: React.FC = () => {
         </div>
       )}
 
-      {/* All Modals */}
       <AddProductModal isOpen={isAddModalVisible} onClose={handleAddModalClose} onProductAdded={handleProductAdded} />
-
       <EditProductModal
         isOpen={isEditModalVisible}
         onClose={handleEditModalClose}
         onProductUpdated={handleProductUpdated}
         product={selectedProduct}
       />
-
       <ImageViewerModal
         isOpen={isImageViewerVisible}
         onClose={handleImageViewerClose}
@@ -1550,7 +1284,6 @@ const ProductList: React.FC = () => {
         productName={selectedImageName}
       />
 
-      {/* Delete Confirmation Modal */}
       {isConfirmModalVisible && (
         <>
           <GlobalBackdrop isVisible={true} onClick={handleCancel} />

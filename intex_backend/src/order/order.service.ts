@@ -12,7 +12,7 @@ export class OrderService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(createOrderDto: CreateOrderDto) {
-    const product = await this.prisma.product.findUnique({
+    const product = await this.prisma.product.findFirst({
       where: { id: createOrderDto.productId },
     });
 
@@ -42,7 +42,7 @@ export class OrderService {
   }
 
   async findOne(id: number) {
-    const order = await this.prisma.order.findUnique({
+    const order = await this.prisma.order.findFirst({
       where: { id },
       include: { product: true },
     });
@@ -55,7 +55,7 @@ export class OrderService {
   }
 
   async update(id: number, updateOrderDto: UpdateOrderDto) {
-    const existingOrder = await this.prisma.order.findUnique({
+    const existingOrder = await this.prisma.order.findFirst({
       where: { id },
     });
 
@@ -64,7 +64,7 @@ export class OrderService {
     }
 
     if (updateOrderDto.productId) {
-      const product = await this.prisma.product.findUnique({
+      const product = await this.prisma.product.findFirst({
         where: { id: updateOrderDto.productId },
       });
 
@@ -87,6 +87,10 @@ export class OrderService {
       };
     }
 
+    if (updateOrderDto.status) {
+      updateData.status = updateOrderDto.status;
+    }
+
     return this.prisma.order.update({
       where: { id },
       data: updateData,
@@ -94,7 +98,7 @@ export class OrderService {
   }
 
   async remove(id: number) {
-    const existingOrder = await this.prisma.order.findUnique({
+    const existingOrder = await this.prisma.order.findFirst({
       where: { id },
     });
 

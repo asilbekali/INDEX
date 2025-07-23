@@ -51,6 +51,7 @@ export const translations = {
     order: "Заказать",
     placeOrder: "Оформить заказ",
     outOfStock: "Нет в наличии",
+    inStock: "в наличии",
 
     orderPool: "Заказать бассейн",
     customerName: "Имя",
@@ -99,6 +100,28 @@ export const translations = {
     orderr: "Заказать",
     thanks: "Спасибо!",
     orderSuccesss: "Ваш заказ успешно оформлен. Мы свяжемся с вами в ближайшее время.",
+    orderNow: "Заказать 📦",
+    orderFormDescription: "Введите свои данные, чтобы оформить заказ!",
+    header_title: "Бассейны Intex в Ташкенте",
+
+    main_description:
+      "Бассейны Intex - это недорогие, качественные, надежные и экологически чистые продукты, предназначенные для приятного отдыха всей семьи. Бассейн можно полностью установить в любом дворе и активно использовать летом. Бассейн подарит вам яркие эмоции и спасет от жары в жаркие летние дни.",
+
+    advantages_intro:
+      "Бассейны Intex выделяются широким спектром преимуществ, ниже можно выделить наиболее важные из них:",
+
+    pool_benefits_desc:
+      "Бассейн можно полностью установить в любом дворе и активно использовать летом. Бассейн подарит вам яркие эмоции и спасет от жары в жаркие летние дни",
+
+    pool_usage_desc:
+      "Бассейн можно установить на любой территории и активно использовать в летний сезон. Бассейн подарит вам яркие эмоции и отдых в жаркие летние дни.",
+
+    benefit_durability: "Долговечность",
+    benefit_easy_install: "Легкая установка",
+    benefit_bright_colors: "Красивые и яркие цвета",
+    benefit_modern_design: "Современный дизайн",
+    benefit_high_quality: "Высокое качество",
+
   },
   uz: {
     framePoolsNav: "Ramkali hovuzlar",
@@ -135,7 +158,7 @@ export const translations = {
 
     intexPoolsInTashkent: "Intex basseynlari Toshkentda",
     aboutIntexPools:
-      "Intex basseynlari - bu butun oila uchun mo'ljallangan arzon, yuqori sifatli, ishonchli va ekologik toza mahsulot.",
+      "Intex basseynlari - bu butun oila uchun yoqimli dam olish uchun mo'ljallangan arzon, yuqori sifatli, ishonchli va ekologik toza mahsulotlar. Basseyn har qanday hovliga to'liq o'rnatilishi va yozda faol foydalanilishi mumkin. Basseyn sizga yorqin his-tuyg'ularni beradi va issiq yoz kunlarida sizni jaziramadan qutqaradi",
     poolBenefits:
       "Hovuzni har qanday hududda o'rnatish va yozgi mavsumda faol foydalanish mumkin. Hovuz sizga issiq va jazirama yoz kunlarida yorqin his-uyg'ular va dam olish beradi.",
     durability: "Chidamlilik",
@@ -151,7 +174,8 @@ export const translations = {
     sum: "so'm",
     order: "Buyurtma berish",
     placeOrder: "Buyurtma rasmiylashtirish",
-    outOfStock: "Omborda yo'q",
+    outOfStock: "Sotuvda yo'q",
+    inStock: "Sotuvda bor",
 
     orderPool: "Hovuz buyurtma qilish",
     customerName: "Ism",
@@ -200,5 +224,26 @@ export const translations = {
     orderr: "Buyurtma berish",
     thanks: "Rahmat!",
     orderSuccesss: "Sizning buyurtmangiz muvaffaqiyatli rasmiylashtirildi. Biz siz bilan yaqin vaqtda bog'lanamiz.",
+    orderNow: "Buyurtma berish 📦",
+    orderFormDescription: "Buyurtma berish uchun ma'lumotlaringizni kiriting!",
+    header_title: "Intex basseynlari Toshkentda",
+
+    main_description:
+      "Intex basseynlari - bu butun oila uchun yoqimli dam olish uchun mo'ljallangan arzon, yuqori sifatli, ishonchli va ekologik toza mahsulotlar. Basseyn har qanday hovliga to'liq o'rnatilishi va yozda faol foydalanilishi mumkin. Basseyn sizga yorqin his-tuyg'ularni beradi va issiq yoz kunlarida sizni jaziramadan qutqaradi.",
+
+    advantages_intro:
+      "Intex basseynlari afzalliklarining kengligi bilan ajralib turadi, quyida ulardan eng muhimlarini ajratib ko'rsatish mumkin:",
+
+    pool_benefits_desc:
+      "Basseyn har qanday hovliga to'liq o'rnatilishi va yozda faol foydalanilishi mumkin. Basseyn sizga yorqin his-tuyg'ularni beradi va issiq yoz kunlarida sizni jaziramadan qutqaradi",
+
+    pool_usage_desc:
+      "Hovuzni har qanday hududda o'rnatish va yozgi mavsumda faol foydalanish mumkin. Hovuz sizga issiq va jazirama yoz kunlarida yorqin his-uyg'ular va dam olish beradi.",
+    benefit_durability: "Chidamlilik",
+    benefit_easy_install: "Oson o'rnatish",
+    benefit_bright_colors: "Chiroyli va yorqin ranglar",
+    benefit_modern_design: "Zamonaviy dizayn",
+    benefit_high_quality: "Yuqori sifat",
+
   },
 }

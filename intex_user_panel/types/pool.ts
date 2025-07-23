@@ -1,36 +1,40 @@
 export interface Pool {
-  id: string
+  id: number
   name: string
   image: string
   price: number
-  frame?: string
-  size: string
-  status?: string
-  count?: string
-  discount?: number
-  tall: string
-  description?: string
-  features?: string[]
-  inStock?: boolean
-  category?: "frame" | "inflatable"
-  createdAt?: string
-  updatedAt?: string
+  frame: "circle" | "square"
+  size: number
+  status: string
+  count: number
+  discount: number
+  tall: number
+  categoryId: number
+  category?: {
+    id: number
+    name: string
+  }
+  createAt: string
 }
+
 
 export interface PoolFilters {
-  category?: string
+  categoryId?: number
   minPrice?: number
   maxPrice?: number
-  size?: string
+  size?: number
+  status?: "recomend" | "discount" | "end"
+  frame?: "circle" | "square"
   inStock?: boolean
-  status?: string
 }
 
+
 export interface OrderData {
-  poolId: string
-  customerName: string
-  customerPhone: string
-  customerAddress: string
+  productId: number
+  userName: string
+  userPhone: string
+  userLocation: string
   quantity: number
   notes?: string
 }
+

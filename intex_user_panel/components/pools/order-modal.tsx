@@ -1,7 +1,6 @@
 "use client"
 
 import type React from "react"
-
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -21,9 +20,9 @@ interface OrderModalProps {
 export default function OrderModal({ pool, isOpen, onClose }: OrderModalProps) {
   const { t } = useLanguage()
   const [formData, setFormData] = useState({
-    customerName: "",
-    customerPhone: "",
-    customerAddress: "",
+    userName: "",
+    userPhone: "",
+    userLocation: "",
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitSuccess, setSubmitSuccess] = useState(false)
@@ -35,21 +34,19 @@ export default function OrderModal({ pool, isOpen, onClose }: OrderModalProps) {
 
     try {
       await createOrder({
-        poolId: pool.id,
-        customerName: formData.customerName,
-        customerPhone: formData.customerPhone,
-        customerAddress: formData.customerAddress,
-        quantity: 1,
-        notes: "",
+        productId: pool.id,
+        userName: formData.userName,
+        userPhone: formData.userPhone,
+        userLocation: formData.userLocation,
       })
       setSubmitSuccess(true)
       setTimeout(() => {
         onClose()
         setSubmitSuccess(false)
         setFormData({
-          customerName: "",
-          customerPhone: "",
-          customerAddress: "",
+          userName: "",
+          userPhone: "",
+          userLocation: "",
         })
       }, 2000)
     } catch (error) {
@@ -71,9 +68,13 @@ export default function OrderModal({ pool, isOpen, onClose }: OrderModalProps) {
     setImageError(true)
   }
 
+  const getCategoryName = (categoryId: number) => {
+    if (categoryId === 1) return "Karkasli basseyn"
+    if (categoryId === 2) return "naduvniy basseyn"
+    return "Nomaʼlum kategoriya"
+  }
+
   if (!isOpen) return null
-  console.log(isOpen);
-  
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -90,74 +91,75 @@ export default function OrderModal({ pool, isOpen, onClose }: OrderModalProps) {
             <DialogDescription className="text-gray-600">{t("orderSuccessMessage")}</DialogDescription>
           </div>
         ) : (
-          <div className="p-6 pt-0">
-            <div className="flex flex-col md:flex-row gap-6">
-              <div className="md:w-1/2 flex flex-col items-center text-center">
-                <h3 className="text-lg font-semibold mb-2 text-primary-teal">{pool.name}</h3>
-                <Image
-                  src={imageError ? "/placeholder.svg?height=200&width=300&query=intex pool" : pool.image}
-                  alt={pool.name}
-                  width={300}
-                  height={200}
-                  className="w-full h-auto object-contain rounded-md mb-4"
-                  onError={handleImageError}
-                />
-                <div className="text-sm text-gray-600 mb-2">
-                  <p>
-                    {t("size")}: {pool.size}
-                  </p>
-                  <p>
-                    {t("height")}: {pool.tall}
-                  </p>
-                </div>
-                <p className="text-2xl font-bold text-primary-teal">
-                  {new Intl.NumberFormat("ru-RU").format(pool.price)} {t("sum")}
-                </p>
-              </div>
-
-              <form onSubmit={handleSubmit} className="md:w-1/2 flex flex-col justify-center space-y-4">
-                <div>
-                  <Input
-                    name="customerName"
-                    value={formData.customerName}
-                    onChange={handleInputChange}
-                    required
-                    placeholder={t("enterName")} 
-                  />
-                </div>
-                <div>
-                  <Input
-                    name="customerPhone"
-                    type="tel"
-                    value={formData.customerPhone}
-                    onChange={handleInputChange}
-                    required
-                    placeholder={t("enterPhonePlaceholder")} 
-                  />
-                </div>
-
-                <div className="relative">
-                  <Input
-                    name="customerAddress"
-                    value={formData.customerAddress}
-                    onChange={handleInputChange}
-                    required
-                    placeholder={t("enterAddress")} 
-                    className="pr-10" 
-                  />
-                  <MapPin className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                </div>
-
-                <Button
-                  type="submit"
-                  className="w-full bg-yellow-accent text-black hover:bg-yellow-500 font-semibold"
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? t("submitting") : t("submitOrder")}
-                </Button>
-              </form>
+          <>
+            <div className="text-center my-4">
+              <DialogTitle className="text-2xl font-semibold">{t("orderNow")}</DialogTitle>
+              <DialogDescription className="text-gray-600">
+                {t("orderFormDescription")}
+              </DialogDescription>
             </div>
-          </div>
+
+            <div className="p-6 pt-0">
+              <div className="flex flex-col md:flex-row gap-6">
+                <div className="md:w-1/2 flex flex-col items-center text-center">
+                  <h3 className="text-lg font-semibold mb-2 text-primary-teal">{pool.name}</h3>
+                  <Image
+                    src={imageError ? "/placeholder.svg?height=200&width=300&query=intex pool" : pool.image}
+                    alt={pool.name}
+                    width={300}
+                    height={200}
+                    className="w-full h-auto object-contain rounded-md mb-4"
+                    onError={handleImageError}
+                  />
+                  <div className="text-sm text-gray-600 mb-2">
+                    <p>{t("size")}: {pool.size} см</p>
+                    <p>{t("height")}: {pool.tall} см</p>
+                    <p>Kategoriya: <strong>{getCategoryName(pool.categoryId)}</strong></p>
+                  </div>
+                  <p className="text-2xl font-bold text-primary-teal">
+                    {new Intl.NumberFormat("ru-RU").format(pool.price)} {t("sum")}
+                  </p>
+                </div>
+
+                <form onSubmit={handleSubmit} className="md:w-1/2 flex flex-col justify-center space-y-4">
+                  <Input
+                    name="userName"
+                    value={formData.userName}
+                    onChange={handleInputChange}
+                    required
+                    placeholder={t("enterName")}
+                  />
+                  <Input
+                    name="userPhone"
+                    type="tel"
+                    value={formData.userPhone}
+                    onChange={handleInputChange}
+                    required
+                    placeholder={t("enterPhonePlaceholder")}
+                  />
+                  <div className="relative">
+                    <Input
+                      name="userLocation"
+                      value={formData.userLocation}
+                      onChange={handleInputChange}
+                      required
+                      placeholder={t("enterAddress")}
+                      className="pr-10"
+                    />
+                    <MapPin className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                  </div>
+
+                  <Button
+                    type="submit"
+                    className="w-full bg-yellow-accent text-black hover:bg-yellow-500 font-semibold"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? t("submitting") : t("submitOrder")}
+                  </Button>
+                </form>
+              </div>
+            </div>
+          </>
         )}
       </DialogContent>
     </Dialog>

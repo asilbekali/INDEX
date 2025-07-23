@@ -1,5 +1,4 @@
 "use client"
-
 import { Users, Truck, Award } from "lucide-react"
 import { useLanguage } from "@/hooks/use-language"
 
@@ -29,9 +28,9 @@ export default function ValuesSection() {
       <div className="container mx-auto px-4">
         <h2 className="text-3xl font-bold text-center text-primary-teal mb-12">{t("ourClientValues")}</h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="flex flex-col md:flex-row md:justify-around md:items-start gap-8">
           {values.map((value, index) => (
-            <div key={index} className="text-center">
+            <div key={index} className="text-center w-full md:w-1/3">
               <value.icon className="feature-icon text-primary-teal" />
               <h3 className="text-xl font-bold mb-4">{value.title}</h3>
               <p className="text-gray-600">{value.description}</p>

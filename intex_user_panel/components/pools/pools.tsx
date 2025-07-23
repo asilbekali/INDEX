@@ -34,9 +34,10 @@ export default function PoolsGrid({ pools }: PoolsGridProps) {
   return (
     <>
       <div className="flex flex-wrap justify-start gap-6 items-stretch">
-        {pools.map((pool) => (
-          <PoolCard key={pool.id} pool={pool} onOrder={handleOrder} />
-        ))}
+        {Array.isArray(pools) && pools.map((pool) => (
+  <PoolCard key={pool.id} pool={pool} onOrder={handleOrder} />
+))}
+
       </div>
 
       {selectedPool && <OrderModal pool={selectedPool} isOpen={isOrderModalOpen} onClose={handleCloseModal} />}

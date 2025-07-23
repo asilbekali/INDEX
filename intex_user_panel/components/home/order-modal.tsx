@@ -1,7 +1,5 @@
 "use client"
-
 import type React from "react"
-
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -43,12 +41,12 @@ export default function OrderModal({ isOpen, onClose }: OrderModalProps) {
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-md border-0 shadow-2xl overflow-hidden">
+      <DialogContent className="sm:max-w-md border-0 shadow-xl overflow-hidden">
         <button
           onClick={handleClose}
-          className="absolute right-4 top-4 z-10 rounded-full p-1 opacity-70 ring-offset-background transition-all hover:opacity-100 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none"
+          className="absolute right-9 top-9 z-10 rounded-full p-1 opacity-70 ring-offset-background transition-all hover:opacity-100 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none"
         >
-          <X className="h-4 w-4" />
+          <X className=" h-4 w-4" />
           <span className="sr-only">Close</span>
         </button>
 
@@ -111,6 +109,12 @@ export default function OrderModal({ isOpen, onClose }: OrderModalProps) {
           </div>
         ) : (
           <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-8 rounded-lg text-center">
+            <DialogHeader className="text-center mb-4">
+              <DialogTitle className="text-3xl font-bold text-gray-800 bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
+                {t("thanks")}
+              </DialogTitle>
+            </DialogHeader>
+
             <div className="mx-auto mb-6 relative">
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="h-24 w-24 rounded-full bg-green-200 opacity-20 animate-ping"></div>
@@ -122,10 +126,6 @@ export default function OrderModal({ isOpen, onClose }: OrderModalProps) {
                 <Check className="h-8 w-8 text-white stroke-[3] drop-shadow-sm" />
               </div>
             </div>
-
-            <DialogTitle className="text-3xl font-bold text-gray-800 mb-4 bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
-              {t("thanks")}
-            </DialogTitle>
 
             <div className="space-y-3">
               <p className="text-gray-700 font-medium text-lg">Buyurtmangiz qabul qilindi!</p>

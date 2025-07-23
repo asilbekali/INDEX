@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { Phone, Send, Instagram } from "lucide-react" 
-import LanguageSwitcher from "./language-switcher"
+import LanguageSwitcher from "./language"
 import { useLanguage } from "@/hooks/use-language"
 
 export default function Header() {

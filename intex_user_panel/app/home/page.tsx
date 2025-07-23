@@ -1,7 +1,7 @@
-import HeroSection from "@/components/home/hero-section"
-import FreeDeliverySection from "@/components/home/free-delivery-section"
-import ValuesSection from "@/components/home/values-section"
-import AboutSection from "@/components/home/about-section"
+import HeroSection from "@/components/home/hero"
+import FreeDeliverySection from "@/components/home/delivery"
+import ValuesSection from "@/components/home/icons-section"
+import AboutSection from "@/components/home/about"
 
 export default function HomePage() {
   return (
@@ -9,7 +9,7 @@ export default function HomePage() {
       <HeroSection />
       <FreeDeliverySection />
       <ValuesSection />
-      <AboutSection />
+      <AboutSection/>
     </div>
   )
 }

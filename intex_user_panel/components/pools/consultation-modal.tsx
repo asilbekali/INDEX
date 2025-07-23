@@ -62,7 +62,7 @@ export default function ConsultationModal({
       setTimeout(() => {
         setSubmitSuccess(false);
         onClose();
-      }, 3000);
+      }, 2000);
     } catch (error) {
       console.error("Error submitting form:", error);
     } finally {
@@ -131,7 +131,7 @@ export default function ConsultationModal({
                   id="phone"
                   name="phone"
                   type="tel"
-                  placeholder="+998 90 123 45 67"
+                  placeholder="+998901234567"
                   value={formData.phone}
                   onChange={handleInputChange}
                   disabled={isSubmitting}

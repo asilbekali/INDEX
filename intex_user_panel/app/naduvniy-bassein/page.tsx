@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { getInflatablePools } from "@/service/api"
-import PoolsGrid from "@/components/pools/pools-grid"
+import PoolsGrid from "@/components/pools/pools"
 import { useLanguage } from "@/hooks/use-language"
 import type { Pool } from "@/types/pool"
 

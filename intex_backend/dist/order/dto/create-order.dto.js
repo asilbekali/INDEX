@@ -17,6 +17,7 @@ class CreateOrderDto {
     userPhone;
     userLocation;
     productId;
+    status;
 }
 exports.CreateOrderDto = CreateOrderDto;
 __decorate([
@@ -58,4 +59,9 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Number)
 ], CreateOrderDto.prototype, "productId", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreateOrderDto.prototype, "status", void 0);
 //# sourceMappingURL=create-order.dto.js.map

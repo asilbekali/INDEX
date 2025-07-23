@@ -3,4 +3,5 @@ export declare class CreateOrderDto {
     userPhone: string;
     userLocation: string;
     productId: number;
+    status?: string;
 }

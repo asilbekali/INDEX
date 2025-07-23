@@ -28,7 +28,18 @@ export declare class AuthService {
             createAt: Date;
         };
     }>;
-    login(email: string, password: string): Promise<string>;
+    login(email: string, password: string): Promise<{
+        accesToken: string;
+        user: {
+            id: number;
+            name: string;
+            email: string;
+            password: string;
+            image: string;
+            role: import(".prisma/client").$Enums.role;
+            createAt: Date;
+        };
+    }>;
     findAll(options: {
         page?: number;
         limit?: number;
@@ -36,9 +47,9 @@ export declare class AuthService {
         role?: string;
     }): Promise<{
         data: {
+            id: number;
             name: string;
             email: string;
-            id: number;
             role: import(".prisma/client").$Enums.role;
             createAt: Date;
         }[];
@@ -51,11 +62,11 @@ export declare class AuthService {
     update(id: number, dto: UpdateAuthDto): Promise<{
         message: string;
         user: {
+            id: number;
             name: string;
             email: string;
             password: string;
             image: string;
-            id: number;
             role: import(".prisma/client").$Enums.role;
             createAt: Date;
         };

@@ -97,7 +97,7 @@ let AuthService = class AuthService {
             role: user.role,
         };
         const token = await this.jwt.signAsync(payload);
-        return `acces token: ${token}`;
+        return { accesToken: token, user: user };
     }
     async findAll(options) {
         const { page = 1, limit = 10, search, role } = options;

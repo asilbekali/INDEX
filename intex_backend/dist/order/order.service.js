@@ -18,7 +18,7 @@ let OrderService = class OrderService {
         this.prisma = prisma;
     }
     async create(createOrderDto) {
-        const product = await this.prisma.product.findUnique({
+        const product = await this.prisma.product.findFirst({
             where: { id: createOrderDto.productId },
         });
         if (!product) {
@@ -43,7 +43,7 @@ let OrderService = class OrderService {
         });
     }
     async findOne(id) {
-        const order = await this.prisma.order.findUnique({
+        const order = await this.prisma.order.findFirst({
             where: { id },
             include: { product: true },
         });
@@ -53,14 +53,14 @@ let OrderService = class OrderService {
         return order;
     }
     async update(id, updateOrderDto) {
-        const existingOrder = await this.prisma.order.findUnique({
+        const existingOrder = await this.prisma.order.findFirst({
             where: { id },
         });
         if (!existingOrder) {
             throw new common_1.NotFoundException(`Bunday buyurtma mavjud emas (id: ${id})`);
         }
         if (updateOrderDto.productId) {
-            const product = await this.prisma.product.findUnique({
+            const product = await this.prisma.product.findFirst({
                 where: { id: updateOrderDto.productId },
             });
             if (!product) {
@@ -77,13 +77,16 @@ let OrderService = class OrderService {
                 connect: { id: updateOrderDto.productId },
             };
         }
+        if (updateOrderDto.status) {
+            updateData.status = updateOrderDto.status;
+        }
         return this.prisma.order.update({
             where: { id },
             data: updateData,
         });
     }
     async remove(id) {
-        const existingOrder = await this.prisma.order.findUnique({
+        const existingOrder = await this.prisma.order.findFirst({
             where: { id },
         });
         if (!existingOrder) {

@@ -7,17 +7,20 @@ import { Context } from "../../context/UserContext";
 
 const Login = () => {
     const navigate = useNavigate();
-    const { setToken, token } = useContext(Context);
+    const { setToken } = useContext(Context);
 
-    ("bu login", token);
 
     const onFinish = async (values: { email: string; password: string }) => {
         try {
             const res = await loginUser(values.email, values.password);
 
-            const token = res.split(":")[1];
+            const token = res.accesToken
 
             localStorage.setItem("token", token);
+            localStorage.setItem("userName", res.user.name)
+            localStorage.setItem("userEmail", res.user.email)
+            localStorage.setItem("userImage", res.user.image)
+
             setToken(token);
 
             message.success("Login successful !");
@@ -31,7 +34,7 @@ const Login = () => {
 
     return (
         <div
-            style={{        
+            style={{
                 backgroundImage: "url('/Rectangle343.png')",
                 backgroundSize: "cover",
                 backgroundPosition: "center",

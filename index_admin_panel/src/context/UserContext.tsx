@@ -39,6 +39,9 @@ export const GlobalContext = ({ children }: { children: ReactNode }) => {
 
     const clearToken = useCallback((redirect = true) => {
         localStorage.removeItem("token")
+        localStorage.removeItem("userName")
+        localStorage.removeItem("userEmail")
+        localStorage.removeItem("userImage")
         localStorage.removeItem("token_expiry")
         setTokenState(null)
         if (redirect) navigate("/login")

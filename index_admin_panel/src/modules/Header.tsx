@@ -15,15 +15,19 @@ const Header = () => {
   const [adminName, setAdminName] = useState<string | null>(null)
   const [adminEmail, setAdminEmail] = useState<string | null>(null)
 
+
   const openModal = () => setIsModalOpen(true)
   const closeModal = () => setIsModalOpen(false)
   const navigate = useNavigate()
 
+
+
   useEffect(() => {
-    const name = localStorage.getItem("name")
-    const email = localStorage.getItem("email")
+    const name = localStorage.getItem("userName")
+    const email = localStorage.getItem("userEmail")
     setAdminName(name)
     setAdminEmail(email)
+
   }, [])
 
   const handleLogout = () => {
@@ -31,13 +35,17 @@ const Header = () => {
     localStorage.removeItem("token_expiry")
     localStorage.removeItem("name")
     localStorage.removeItem("email")
-    setToken(null) // Update global context token to null, which triggers redirection
-    closeModal() // Close the modal immediately
+    localStorage.removeItem("name")
+    localStorage.removeItem("email")
+    localStorage.removeItem("userImage")
+
+    setToken(null)
+    closeModal()
     navigate("/login")
   }
 
   const handleClickOutside = (event: MouseEvent) => {
-    const modalContent = document.querySelector(".modal-content") // Use modal-content class
+    const modalContent = document.querySelector(".modal-content")
     if (modalContent && !modalContent.contains(event.target as Node)) {
       closeModal()
     }
@@ -51,9 +59,9 @@ const Header = () => {
   }, [isModalOpen])
 
   const adminData = {
-    name: adminName || "Joe Melton",
-    email: adminEmail || "joe.melon@intex-market.uz",
-    image: "/placeholder.svg?height=100&width=100",
+    name: adminName || localStorage.getItem("userName"),
+    email: adminEmail || localStorage.getItem("userEmail"),
+    image: localStorage.getItem("userImage"),
   }
 
   return (
@@ -157,7 +165,7 @@ const Header = () => {
                   />
                   <User
                     className="text-white text-3xl transition-transform duration-200"
-                    style={{ display: imageLoading ? "none" : "flex" }} // Show User icon if image fails to load
+                    style={{ display: imageLoading ? "none" : "flex" }}
                   />
                 </div>
 

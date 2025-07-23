@@ -1,41 +1,36 @@
+// ✅ UPDATED: user-api.ts (Yoki api/index.ts deb nomlashingiz mumkin)
 import type { AxiosError } from "axios";
-import api from "./axiosInstance"; // Import the configured axios instance
+import api from "./axiosInstance";
 
-// Simple in-memory cache for API responses
 const apiCache = new Map<string, { data: any; timestamp: number }>();
-const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes in milliseconds
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
 
-// Function to clear the entire product cache
+function isAxiosError(error: any): error is AxiosError {
+    return (error as AxiosError).isAxiosError === true;
+}
+
 const clearProductCache = () => {
-    // For simplicity, we'll clear all entries for now.
-    // In a more complex app, you might clear specific keys or categories.
     apiCache.clear();
     console.log("Product cache cleared.");
 };
 
-const getUsers = async () => {
+// AUTH
+export const getUsers = async () => {
     const response = await api.get("/auth");
     return response.data;
 };
 
-async function loginUser(email: string, password: string) {
+export async function loginUser(email: string, password: string) {
     try {
         const response = await api.post("/auth/login", { email, password });
-        console.log(response.data);
-        if (response.data.token) {
-            if (typeof window !== "undefined") {
-                localStorage.setItem("token", response.data.token);
-            }
+        if (response.data.token && typeof window !== "undefined") {
+            localStorage.setItem("token", response.data.token);
         }
         return response.data;
     } catch (error: unknown) {
         if (isAxiosError(error)) {
             const data = error.response?.data as any;
-            if (data && typeof data.message === "string") {
-                throw new Error(data.message);
-            } else {
-                throw new Error("Login failed");
-            }
+            throw new Error(data?.message || "Login failed");
         } else if (error instanceof Error) {
             throw new Error(error.message);
         } else {
@@ -44,7 +39,7 @@ async function loginUser(email: string, password: string) {
     }
 }
 
-async function registerUser(
+export async function registerUser(
     name: string,
     email: string,
     password: string,
@@ -61,11 +56,7 @@ async function registerUser(
     } catch (error: unknown) {
         if (isAxiosError(error)) {
             const data = error.response?.data as any;
-            if (data && typeof data.message === "string") {
-                throw new Error(data.message);
-            } else {
-                throw new Error("Registration failed");
-            }
+            throw new Error(data?.message || "Registration failed");
         } else if (error instanceof Error) {
             throw new Error(error.message);
         } else {
@@ -74,29 +65,23 @@ async function registerUser(
     }
 }
 
-async function getProducts(params?: Record<string, any>, forceRefresh = false) {
-    const cacheKey = JSON.stringify(params || {}); // Create a unique key based on request parameters
-
-    // Check if data exists in cache and is still fresh, unless forceRefresh is true
+// PRODUCTS
+export async function getProducts(
+    params?: Record<string, any>,
+    forceRefresh = false
+) {
+    const cacheKey = JSON.stringify(params || {});
     if (!forceRefresh && apiCache.has(cacheKey)) {
-        const cachedEntry = apiCache.get(cacheKey)!;
-        if (Date.now() - cachedEntry.timestamp < CACHE_DURATION) {
-            console.log("Returning products from cache for key:", cacheKey);
-            return cachedEntry.data;
+        const cached = apiCache.get(cacheKey)!;
+        if (Date.now() - cached.timestamp < CACHE_DURATION) {
+            console.log("Returning products from cache");
+            return cached.data;
         } else {
-            console.log("Cache expired for key:", cacheKey);
-            apiCache.delete(cacheKey); // Invalidate expired cache entry
+            apiCache.delete(cacheKey);
         }
     }
 
     try {
-        console.log(
-            "Fetching products from API for key:",
-            cacheKey,
-            " (forceRefresh:",
-            forceRefresh,
-            ")"
-        );
         const queryParams = new URLSearchParams();
         if (params?.page) queryParams.append("page", params.page.toString());
         if (params?.limit) queryParams.append("limit", params.limit.toString());
@@ -105,20 +90,12 @@ async function getProducts(params?: Record<string, any>, forceRefresh = false) {
 
         const response = await api.get(`/product?${queryParams.toString()}`);
         const data = response.data;
-
-        // Store the new data in cache with a timestamp
         apiCache.set(cacheKey, { data, timestamp: Date.now() });
         return data;
     } catch (error: unknown) {
         if (isAxiosError(error)) {
             const data = error.response?.data as any;
-            if (data && typeof data.message === "string") {
-                throw new Error(data.message);
-            } else {
-                throw new Error("Product fetch failed");
-            }
-        } else if (error instanceof Error) {
-            throw new Error(error.message);
+            throw new Error(data?.message || "Product fetch failed");
         } else {
             throw new Error(
                 "An unknown error occurred while fetching products"
@@ -127,117 +104,114 @@ async function getProducts(params?: Record<string, any>, forceRefresh = false) {
     }
 }
 
-// New function for image upload
-async function uploadImageApi(file: File) {
+export async function addProductApi(productData: any) {
     try {
-        console.log("file manzili: ", file.name);
-        const formData = new FormData();
-        formData.append("file", file); // Changed from "image" to "file"
-        console.log(formData);
-        // Axios automatically sets Content-Type to multipart/form-data when FormData is used
-        const response = await api.post("/multer/upload", formData, {
-            headers: {
-                "Content-Type": "multipart/form-data", // This header is often automatically set by Axios when using FormData
-            },
-        });
-        return response.data; // Assuming response.data contains the filename or URL
-    } catch (error: unknown) {
-        if (isAxiosError(error)) {
-            const data = error.response?.data as any;
-            if (data && typeof data.message === "string") {
-                throw new Error(data.message);
-            } else {
-                throw new Error("Failed to upload image");
-            }
-        } else if (error instanceof Error) {
-            throw new Error(error.message);
-        } else {
-            throw new Error("An unknown error occurred while uploading image");
-        }
-    }
-}
-
-// Actual API call for adding a product
-async function addProductApi(productData: any) {
-    try {
-        console.log("bu product", productData);
         const response = await api.post("/product", productData);
-        console.log("Product added:", response.data);
-        console.log("token bul ", localStorage.getItem("token"));
-        clearProductCache(); // Invalidate cache after adding
+        clearProductCache();
         return response.data;
     } catch (error: unknown) {
         if (isAxiosError(error)) {
             const data = error.response?.data as any;
-            if (data && typeof data.message === "string") {
-                throw new Error(data.message);
-            } else {
-                throw new Error("Failed to add product");
-            }
-        } else if (error instanceof Error) {
-            throw new Error(error.message);
+            throw new Error(data?.message || "Failed to add product");
         } else {
             throw new Error("An unknown error occurred while adding product");
         }
     }
 }
 
-// Actual API call for updating a product
-async function updateProductApi(productId: number, productData: any) {
+export async function updateProductApi(productId: number, productData: any) {
     try {
-        const response = await api.put(`/product/${productId}`, productData);
+        const response = await api.patch(`/product/${productId}`, productData);
         clearProductCache();
         return response.data;
     } catch (error: unknown) {
         if (isAxiosError(error)) {
             const data = error.response?.data as any;
-            if (data && typeof data.message === "string") {
-                throw new Error(data.message);
-            } else {
-                throw new Error("Failed to update product");
-            }
-        } else if (error instanceof Error) {
-            throw new Error(error.message);
+            throw new Error(data?.message || "Failed to update product");
         } else {
             throw new Error("An unknown error occurred while updating product");
         }
     }
 }
 
-// Actual API call for deleting a product
-async function deleteProductApi(productId: number) {
+export async function deleteProductApi(productId: number) {
     try {
         const response = await api.delete(`/product/${productId}`);
-        console.log("Product deleted:", response.data);
         clearProductCache();
         return response.data;
     } catch (error: unknown) {
         if (isAxiosError(error)) {
             const data = error.response?.data as any;
-            if (data && typeof data.message === "string") {
-                throw new Error(data.message);
-            } else {
-                throw new Error("Failed to delete product");
-            }
-        } else if (error instanceof Error) {
-            throw new Error(error.message);
+            throw new Error(data?.message || "Failed to delete product");
         } else {
             throw new Error("An unknown error occurred while deleting product");
         }
     }
 }
 
-function isAxiosError(error: any): error is AxiosError {
-    return (error as AxiosError).isAxiosError === true;
+// IMAGE UPLOAD
+export async function uploadImageApi(file: File) {
+    try {
+        const formData = new FormData();
+        formData.append("file", file);
+        const response = await api.post("/multer/upload", formData, {
+            headers: { "Content-Type": "multipart/form-data" },
+        });
+        return response.data;
+    } catch (error: unknown) {
+        if (isAxiosError(error)) {
+            const data = error.response?.data as any;
+            throw new Error(data?.message || "Failed to upload image");
+        } else {
+            throw new Error("An unknown error occurred while uploading image");
+        }
+    }
 }
 
-export {
-    getUsers,
-    loginUser,
-    registerUser,
-    getProducts,
-    addProductApi,
-    updateProductApi,
-    deleteProductApi,
-    uploadImageApi,
-};
+// ORDERS
+export async function getOrdersFromApi() {
+    try {
+        const response = await api.get("/order");
+        return response.data;
+    } catch (error: unknown) {
+        if (isAxiosError(error)) {
+            const data = error.response?.data as any;
+            throw new Error(data?.message || "Failed to fetch orders");
+        } else {
+            throw new Error("An unknown error occurred while fetching orders");
+        }
+    }
+}
+
+export async function updateOrderStatus(orderId: string) {
+    try {
+        const response = await api.patch(`/order/${orderId}`, {
+            status: "NoActive",
+        });
+        console.log(response.data);
+        console.log(response.data);
+
+        return response.data;
+    } catch (error: unknown) {
+        if (isAxiosError(error)) {
+            const data = error.response?.data as any;
+            throw new Error(data?.message || "Failed to update order");
+        } else {
+            throw new Error("An unknown error occurred while updating order");
+        }
+    }
+}
+
+export async function deleteOrderApi(orderId: number) {
+    try {
+        const response = await api.delete(`/order/${orderId}`);
+        return response.data;
+    } catch (error: unknown) {
+        if (isAxiosError(error)) {
+            const data = error.response?.data as any;
+            throw new Error(data?.message || "Failed to delete order");
+        } else {
+            throw new Error("An unknown error occurred while deleting order");
+        }
+    }
+}

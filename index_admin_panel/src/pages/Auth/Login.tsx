@@ -9,7 +9,7 @@ const Login = () => {
     const navigate = useNavigate();
     const { setToken, token } = useContext(Context);
 
-    console.log("bu login", token);
+    ("bu login", token);
 
     const onFinish = async (values: { email: string; password: string }) => {
         try {

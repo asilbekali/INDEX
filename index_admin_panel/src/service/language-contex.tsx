@@ -24,6 +24,7 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   const t = (key: string) => {
     const translations: Record<LanguageCode, Record<string, string>> = {
       en: {
+
         products: "Products",
         orders: "Orders",
         categories: "Categories",

@@ -9,6 +9,7 @@ import {
   updateOrderStatus,
   deleteOrderApi,
   getConsultationsFromApi,
+  updateConsultationStatus,
 } from "../api/userApi";
 
 type OrderItem = {
@@ -267,6 +268,9 @@ export default function OrdersPage() {
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                   {t("time")}
                 </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  {t("harakatlar")}
+                </th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
@@ -283,6 +287,11 @@ export default function OrdersPage() {
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-500">
                     {new Date(item.createAt).toLocaleString()}
+                  </td>
+                  <td>
+                    <button onClick={() => updateConsultationStatus(item.id)} className="text-gray-400 hover:text-blue-500">
+                      {t("accept")}
+                    </button>
                   </td>
                 </tr>
               ))}

@@ -21,6 +21,15 @@ export async function getConsultationsFromApi() {
     return data;
 }
 
+export async function deleteConsultationApi(consultationId: number) {
+    try {
+        await api.delete(`/consultation/${consultationId}`);
+    } catch (error) {
+        console.error("Error deleting consultation:", error);
+        throw error;
+    }
+};
+
 const clearProductCache = () => {
     apiCache.clear();
     console.log("Product cache cleared.");

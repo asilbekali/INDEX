@@ -10,6 +10,7 @@ import {
   deleteOrderApi,
   getConsultationsFromApi,
   updateConsultationStatus,
+  deleteConsultationApi,
 } from "../api/userApi";
 
 type OrderItem = {
@@ -47,7 +48,9 @@ export default function OrdersPage() {
   const [orders, setOrders] = useState<OrderItem[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isModalVisibleConsultation, setIsModalVisibleConsultation] = useState(false);
   const [selectedOrderId, setSelectedOrderId] = useState<number | null>(null);
+  const [selectedConsultationId, setSelectedConsultationId] = useState<number | null>(null);
   const [actionType, setActionType] = useState<"accept" | "delete" | null>(
     null
   );
@@ -58,7 +61,7 @@ export default function OrdersPage() {
       try {
         const fetched = await getOrdersFromApi();
         setOrders(fetched);
-        return true
+        return true;
       } catch (err: any) {
         message.error(err.message || "Failed to fetch orders");
       }
@@ -67,7 +70,7 @@ export default function OrdersPage() {
       try {
         const fetched = await getConsultationsFromApi();
         setConsultation(fetched);
-        return true
+        return true;
       } catch (error) {
         console.log(error);
       }
@@ -80,6 +83,11 @@ export default function OrdersPage() {
     setSelectedOrderId(orderId);
     setActionType(type);
     setIsModalVisible(true);
+  };
+  const showConfirmModalConsultation = (consultationId: number, type: "accept" | "delete") => {
+    setSelectedConsultationId(consultationId);
+    setActionType(type);
+    setIsModalVisibleConsultation(true);
   };
 
   const handleConfirm = async () => {
@@ -108,6 +116,31 @@ export default function OrdersPage() {
     } finally {
       setIsModalVisible(false);
       setSelectedOrderId(null);
+      setActionType(null);
+    }
+  };
+  const handleConfirmConsultation = async () => {
+    if (selectedConsultationId === null || !actionType) return;
+
+    try {
+      if (actionType === "accept") {
+        await updateConsultationStatus(selectedConsultationId);
+        setConsultation((prev) =>
+          prev ? { ...prev, status: "NoActive" } : null
+        );
+        message.success(t("consultationAccepted"));
+      } else if (actionType === "delete") {
+        await deleteConsultationApi(selectedConsultationId);
+        setConsultation((prev) =>
+          prev ? { ...prev, status: "deleted" } : null
+        );
+        message.success(t("consultationDeleted"));
+      }
+    } catch (err: any) {
+      message.error(err.message || "Operation failed");
+    } finally {
+      setIsModalVisible(false);
+      setSelectedConsultationId(null);
       setActionType(null);
     }
   };
@@ -288,10 +321,29 @@ export default function OrdersPage() {
                   <td className="px-6 py-4 text-sm text-gray-500">
                     {new Date(item.createAt).toLocaleString()}
                   </td>
-                  <td>
-                    <button onClick={() => updateConsultationStatus(item.id)} className="text-gray-400 hover:text-blue-500">
-                      {t("accept")}
-                    </button>
+                  <td className="px-6 py-4 text-right text-sm font-medium">
+                    <div className="flex items-center space-x-2">
+                      <button
+                        className={`hover:text-green-500 ${
+                          item.status === "NoActive"
+                            ? "text-green-500"
+                            : "text-gray-400"
+                        }`}
+                        onClick={() => {
+                          if (item.status !== "NoActive") {
+                            showConfirmModalConsultation(item.id, "accept");
+                          }
+                        }}
+                      >
+                        <CheckCircle size={18} />
+                      </button>
+                      <button
+                        className="text-gray-400 hover:text-red-500"
+                        onClick={() => showConfirmModalConsultation(item.id, "delete")}
+                      >
+                        <Trash2 size={18} />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -299,22 +351,19 @@ export default function OrdersPage() {
           </table>
         </div>
       )}
-      <Modal
+            <Modal
         title={actionType === "accept" ? t("confirmAccept") : t("confirmDelete")}
-        visible={isModalVisible}
-        onOk={handleConfirm}
-        onCancel={handleCancel}
+        open={isModalVisible}
+        onOk={handleConfirmConsultation}
+        onCancel={() => setIsModalVisible(false)}
         okText={t("confirm")}
         cancelText={t("cancel")}
         centered
-        className="text-center"
       >
-        <p>
-          {actionType === "accept"
-            ? t("confirmAcceptMessage")
-            : t("confirmDeleteMessage")}
-        </p>
+        <p>{actionType === "accept" ? t("confirmAcceptMessage") : t("confirmDeleteMessage")}</p>
       </Modal>
     </div>
   );
 }
+
+

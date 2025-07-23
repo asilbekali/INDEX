@@ -262,7 +262,7 @@ const AddProductModal: React.FC<AddProductModalProps> = ({ isOpen, onClose, onPr
                                 <Sparkles className="w-6 h-6 text-white animate-pulse" />
                             </div>
                             <div>
-                                <h3 className="text-3xl font-bold text-gray-900 bg-gradient-to-r from-[#009399] to-[#007a7f] bg-clip-text text-transparent">
+                                <h3 className="text-3xl font-bold text-gray-900 bg-gradient-to-r from-[#009399] to-[#007a7f] bg-clip-text ">
                                     {t("addNewProduct")}
                                 </h3>
                                 <p className="text-sm text-gray-500 mt-1">Create something amazing</p>
@@ -324,8 +324,8 @@ const AddProductModal: React.FC<AddProductModalProps> = ({ isOpen, onClose, onPr
                                     </label>
                                     <div
                                         className={`relative border-3 border-dashed rounded-2xl p-8 transition-all duration-500 transform hover:scale-[1.02] group ${dragActive
-                                                ? "border-[#009399] bg-gradient-to-br from-[#009399]/10 to-[#009399]/5 scale-[1.02] shadow-lg"
-                                                : "border-gray-300 hover:border-[#009399]/50"
+                                            ? "border-[#009399] bg-gradient-to-br from-[#009399]/10 to-[#009399]/5 scale-[1.02] shadow-lg"
+                                            : "border-gray-300 hover:border-[#009399]/50"
                                             } ${selectedFile
                                                 ? "bg-gradient-to-br from-green-50 to-emerald-50 border-green-300 shadow-lg"
                                                 : "hover:bg-gradient-to-br hover:from-gray-50 hover:to-white"
@@ -347,10 +347,10 @@ const AddProductModal: React.FC<AddProductModalProps> = ({ isOpen, onClose, onPr
                                         <div className="text-center relative z-5">
                                             <div
                                                 className={`mx-auto w-16 h-16 rounded-2xl flex items-center justify-center mb-6 transition-all duration-500 transform group-hover:scale-110 ${selectedFile
-                                                        ? "bg-gradient-to-br from-green-400 to-emerald-500 shadow-lg"
-                                                        : dragActive
-                                                            ? "bg-gradient-to-br from-[#009399] to-[#007a7f] shadow-lg scale-110"
-                                                            : "bg-gradient-to-br from-gray-100 to-gray-200 group-hover:from-[#009399]/20 group-hover:to-[#009399]/10"
+                                                    ? "bg-gradient-to-br from-green-400 to-emerald-500 shadow-lg"
+                                                    : dragActive
+                                                        ? "bg-gradient-to-br from-[#009399] to-[#007a7f] shadow-lg scale-110"
+                                                        : "bg-gradient-to-br from-gray-100 to-gray-200 group-hover:from-[#009399]/20 group-hover:to-[#009399]/10"
                                                     }`}
                                             >
                                                 {selectedFile ? (
@@ -358,8 +358,8 @@ const AddProductModal: React.FC<AddProductModalProps> = ({ isOpen, onClose, onPr
                                                 ) : (
                                                     <Upload
                                                         className={`w-8 h-8 transition-all duration-500 ${dragActive
-                                                                ? "text-white scale-110 animate-bounce"
-                                                                : "text-gray-400 group-hover:text-[#009399]"
+                                                            ? "text-white scale-110 animate-bounce"
+                                                            : "text-gray-400 group-hover:text-[#009399]"
                                                             }`}
                                                     />
                                                 )}
@@ -499,7 +499,6 @@ const AddProductModal: React.FC<AddProductModalProps> = ({ isOpen, onClose, onPr
         </React.Fragment>
     )
 
-    // Use createPortal to render modal at document.body level
     return createPortal(modalContent, document.body)
 }
 

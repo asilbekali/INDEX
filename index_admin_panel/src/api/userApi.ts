@@ -9,6 +9,13 @@ function isAxiosError(error: any): error is AxiosError {
     return (error as AxiosError).isAxiosError === true;
 }
 
+export async function getConsultationsFromApi() {
+    let data = api.get("/consultation").then((response) => {
+        return response.data;
+    });
+    return data;
+}
+
 const clearProductCache = () => {
     apiCache.clear();
     console.log("Product cache cleared.");

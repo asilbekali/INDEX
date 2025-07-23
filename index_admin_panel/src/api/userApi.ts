@@ -32,7 +32,6 @@ export async function deleteConsultationApi(consultationId: number) {
 
 const clearProductCache = () => {
     apiCache.clear();
-    console.log("Product cache cleared.");
 };
 
 // AUTH
@@ -95,7 +94,6 @@ export async function getProducts(
     if (!forceRefresh && apiCache.has(cacheKey)) {
         const cached = apiCache.get(cacheKey)!;
         if (Date.now() - cached.timestamp < CACHE_DURATION) {
-            console.log("Returning products from cache");
             return cached.data;
         } else {
             apiCache.delete(cacheKey);
@@ -178,6 +176,7 @@ export async function uploadImageApi(file: File) {
         const response = await api.post("/multer/upload", formData, {
             headers: { "Content-Type": "multipart/form-data" },
         });
+
         return response.data;
     } catch (error: unknown) {
         if (isAxiosError(error)) {
@@ -187,6 +186,10 @@ export async function uploadImageApi(file: File) {
             throw new Error("An unknown error occurred while uploading image");
         }
     }
+}
+
+export function getImageUrl(fileName: string): string {
+    return `http://18.184.169.185/multer/${encodeURIComponent(fileName)}`;
 }
 
 // ORDERS
@@ -209,8 +212,6 @@ export async function updateOrderStatus(orderId: string) {
         const response = await api.patch(`/order/${orderId}`, {
             status: "NoActive",
         });
-        console.log(response.data);
-        console.log(response.data);
 
         return response.data;
     } catch (error: unknown) {
@@ -233,6 +234,24 @@ export async function deleteOrderApi(orderId: number) {
             throw new Error(data?.message || "Failed to delete order");
         } else {
             throw new Error("An unknown error occurred while deleting order");
+        }
+    }
+}
+
+// CATEGORY
+
+export async function getCategoriesFromApi() {
+    try {
+        const response = await api.get("/category");
+        return response.data;
+    } catch (error: unknown) {
+        if (isAxiosError(error)) {
+            const data = error.response?.data as any;
+            throw new Error(data?.message || "Failed to fetch categories");
+        } else {
+            throw new Error(
+                "An unknown error occurred while fetching categories"
+            );
         }
     }
 }

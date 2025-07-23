@@ -27,6 +27,19 @@ type OrderItem = {
   };
 };
 
+type Consultation = {
+  data: {
+    id: number;
+    name: string;
+    phone: string;
+    status: string;
+    createAt: string;
+  }[];
+  lastPage: number;
+  page: number;
+  total: number;
+};
+
 export default function OrdersPage() {
   const { t } = useLanguage();
   const [activeTab, setActiveTab] = useState("orders");
@@ -37,26 +50,29 @@ export default function OrdersPage() {
   const [actionType, setActionType] = useState<"accept" | "delete" | null>(
     null
   );
+  const [consultation, setConsultation] = useState<Consultation | null>(null);
 
   useEffect(() => {
     const fetchOrders = async () => {
       try {
         const fetched = await getOrdersFromApi();
         setOrders(fetched);
+        return true
       } catch (err: any) {
         message.error(err.message || "Failed to fetch orders");
       }
     };
     const fetchConsultations = async () => {
       try {
-        const fetchedConsultations = await getConsultationsFromApi();
-        console.log(fetchedConsultations);
+        const fetched = await getConsultationsFromApi();
+        setConsultation(fetched);
+        return true
       } catch (error) {
-        console.error(error);
+        console.log(error);
       }
     };
-    fetchOrders();
     fetchConsultations();
+    fetchOrders();
   }, []);
 
   const showConfirmModal = (orderId: number, type: "accept" | "delete") => {
@@ -234,29 +250,60 @@ export default function OrdersPage() {
         </div>
       )}
 
-      {activeTab === "consultations" && (
-        <div className="flex flex-col items-center justify-center h-full text-gray-600">
-          <p className="text-lg">{t("noConsultations")}</p>
+      {activeTab === "consultations" && consultation && (
+        <div className="overflow-x-auto rounded-lg border border-gray-200 shadow-sm">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  {t("name")}
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  {t("phone")}
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  {t("status")}
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  {t("time")}
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {consultation.data.map((item) => (
+                <tr key={item.id}>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                    {item.name}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-500">
+                    {item.phone}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-500">
+                    {item.status}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-500">
+                    {new Date(item.createAt).toLocaleString()}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       )}
-
       <Modal
-        title={
-          actionType === "accept"
-            ? t("confirmAcceptOrderTitle")
-            : t("confirmDeleteOrderTitle")
-        }
-        open={isModalVisible}
+        title={actionType === "accept" ? t("confirmAccept") : t("confirmDelete")}
+        visible={isModalVisible}
         onOk={handleConfirm}
         onCancel={handleCancel}
-        okText={t("yes")}
-        cancelText={t("no")}
+        okText={t("confirm")}
+        cancelText={t("cancel")}
         centered
+        className="text-center"
       >
         <p>
           {actionType === "accept"
-            ? t("confirmAcceptOrderMessage")
-            : t("confirmDeleteOrderMessage")}
+            ? t("confirmAcceptMessage")
+            : t("confirmDeleteMessage")}
         </p>
       </Modal>
     </div>

@@ -8,6 +8,11 @@ const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
 function isAxiosError(error: any): error is AxiosError {
     return (error as AxiosError).isAxiosError === true;
 }
+export function updateConsultationStatus(consultationId: string) {
+    return api.patch(`/consultation/${consultationId}`, {
+        status: "NoActive",
+    });
+}
 
 export async function getConsultationsFromApi() {
     let data = api.get("/consultation").then((response) => {

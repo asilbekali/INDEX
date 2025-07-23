@@ -8,6 +8,7 @@ export declare class ConsultationService {
         name: string;
         id: number;
         createAt: Date;
+        status: import(".prisma/client").$Enums.checked;
         phone: string;
     }>;
     findAll(query: {
@@ -19,6 +20,7 @@ export declare class ConsultationService {
             name: string;
             id: number;
             createAt: Date;
+            status: import(".prisma/client").$Enums.checked;
             phone: string;
         }[];
         total: number;
@@ -29,18 +31,21 @@ export declare class ConsultationService {
         name: string;
         id: number;
         createAt: Date;
+        status: import(".prisma/client").$Enums.checked;
         phone: string;
     }>;
     update(id: number, updateConsultationDto: UpdateConsultationDto): Promise<{
         name: string;
         id: number;
         createAt: Date;
+        status: import(".prisma/client").$Enums.checked;
         phone: string;
     }>;
     remove(id: number): Promise<{
         name: string;
         id: number;
         createAt: Date;
+        status: import(".prisma/client").$Enums.checked;
         phone: string;
     }>;
 }

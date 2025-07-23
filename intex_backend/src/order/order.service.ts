@@ -21,14 +21,22 @@ export class OrderService {
     }
 
     return this.prisma.order.create({
-      data: createOrderDto,
+      data: {
+        userName: createOrderDto.userName,
+        userPhone: createOrderDto.userPhone,
+        userLocation: createOrderDto.userLocation,
+        product: {
+          connect: { id: createOrderDto.productId },
+        },
+        // status maydoni kiritilmaydi – default(active) bo'ladi
+      },
     });
   }
 
   async findAll() {
     return this.prisma.order.findMany({
       include: {
-        product: true, 
+        product: true,
       },
     });
   }
@@ -67,9 +75,21 @@ export class OrderService {
       }
     }
 
+    const updateData: any = {
+      userName: updateOrderDto.userName,
+      userPhone: updateOrderDto.userPhone,
+      userLocation: updateOrderDto.userLocation,
+    };
+
+    if (updateOrderDto.productId) {
+      updateData.product = {
+        connect: { id: updateOrderDto.productId },
+      };
+    }
+
     return this.prisma.order.update({
       where: { id },
-      data: updateOrderDto,
+      data: updateData,
     });
   }
 

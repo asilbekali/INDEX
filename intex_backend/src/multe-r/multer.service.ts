@@ -47,7 +47,7 @@ export class MulterService {
   }
 
   findOne(filename: string) {
-    console.log(filename);
+    filename;
 
     const filePath = path.join(this.uploadPath, filename);
 

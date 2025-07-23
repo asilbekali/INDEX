@@ -44,7 +44,7 @@ let MulterService = class MulterService {
         return { message: 'File uploaded successfully', path: imagePath };
     }
     findOne(filename) {
-        console.log(filename);
+        filename;
         const filePath = path.join(this.uploadPath, filename);
         if (!fs.existsSync(filePath)) {
             throw new common_1.NotFoundException('File not found');

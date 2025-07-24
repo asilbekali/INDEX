@@ -121,6 +121,7 @@ export const translations = {
     benefit_bright_colors: "Красивые и яркие цвета",
     benefit_modern_design: "Современный дизайн",
     benefit_high_quality: "Высокое качество",
+    loadingg:"Загрузка....."
 
   },
   uz: {
@@ -244,6 +245,7 @@ export const translations = {
     benefit_bright_colors: "Chiroyli va yorqin ranglar",
     benefit_modern_design: "Zamonaviy dizayn",
     benefit_high_quality: "Yuqori sifat",
+    loadingg:"Yuklanmoqda....."
 
   },
 }

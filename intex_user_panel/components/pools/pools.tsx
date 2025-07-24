@@ -4,6 +4,8 @@ import { useState } from "react"
 import PoolCard from "@/components/pools/pool-card"
 import OrderModal from "@/components/pools/order-modal"
 import type { Pool } from "@/types/pool"
+import { useLanguage } from "@/hooks/use-language"
+
 
 interface PoolsGridProps {
   pools: Pool[]
@@ -12,6 +14,7 @@ interface PoolsGridProps {
 export default function PoolsGrid({ pools }: PoolsGridProps) {
   const [selectedPool, setSelectedPool] = useState<Pool | null>(null)
   const [isOrderModalOpen, setIsOrderModalOpen] = useState(false)
+  const { t } = useLanguage()
 
   const handleOrder = (pool: Pool) => {
     setSelectedPool(pool)
@@ -26,7 +29,7 @@ export default function PoolsGrid({ pools }: PoolsGridProps) {
   if (pools.length === 0) {
     return (
       <div className="text-center py-12">
-        <p className="text-gray-500 text-lg">Бассейны не найдены</p>
+        <p className="text-gray-500 text-lg font-bold">{t("loadingg")}</p>
       </div>
     )
   }
@@ -35,8 +38,8 @@ export default function PoolsGrid({ pools }: PoolsGridProps) {
     <>
       <div className="flex flex-wrap justify-start gap-6 items-stretch">
         {Array.isArray(pools) && pools.map((pool) => (
-  <PoolCard key={pool.id} pool={pool} onOrder={handleOrder} />
-))}
+          <PoolCard key={pool.id} pool={pool} onOrder={handleOrder} />
+        ))}
 
       </div>
 

@@ -68,12 +68,6 @@ export default function OrderModal({ pool, isOpen, onClose }: OrderModalProps) {
     setImageError(true)
   }
 
-  const getCategoryName = (categoryId: number) => {
-    if (categoryId === 1) return "Karkasli basseyn"
-    if (categoryId === 2) return "naduvniy basseyn"
-    return "Nomaʼlum kategoriya"
-  }
-
   if (!isOpen) return null
 
   return (
@@ -114,7 +108,6 @@ export default function OrderModal({ pool, isOpen, onClose }: OrderModalProps) {
                   <div className="text-sm text-gray-600 mb-2">
                     <p>{t("size")}: {pool.size} см</p>
                     <p>{t("height")}: {pool.tall} см</p>
-                    <p>Kategoriya: <strong>{getCategoryName(pool.categoryId)}</strong></p>
                   </div>
                   <p className="text-2xl font-bold text-primary-teal">
                     {new Intl.NumberFormat("ru-RU").format(pool.price)} {t("sum")}

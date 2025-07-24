@@ -56,7 +56,7 @@ export default function PoolCard({ pool, onOrder }: PoolCardProps) {
   }
 
   return (
-    <div className="pool-card relative h-full flex flex-col">
+    <div className="pool-card relative h-full flex flex-col mt-3">
       <div className="p-4 flex flex-col h-full">
         <div className="flex-grow flex flex-col">
           {pool.status && (
@@ -77,9 +77,10 @@ export default function PoolCard({ pool, onOrder }: PoolCardProps) {
               src={
                 imageError
                   ? "/placeholder.svg?height=200&width=300&query=intex pool"
-                  : pool.image.startsWith("https")
+                  : pool.image.startsWith("http")
                     ? pool.image
-                    : `/uploads/${pool.image}`}
+                    : `/uploads/${pool.image}`
+              }
               alt={pool.name}
               width={300}
               height={200}
@@ -87,6 +88,7 @@ export default function PoolCard({ pool, onOrder }: PoolCardProps) {
               onError={handleImageError}
               loading="lazy"
             />
+
 
             {pool.discount > 0 && (
               <Badge className="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1">

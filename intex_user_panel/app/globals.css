@@ -8,8 +8,27 @@
   --yellow-accent: #ffd700;
 }
 
+html,
+body {
+  overflow-x: hidden;
+}
+
 body {
   font-family: "Inter", sans-serif;
+}
+
+.sticky-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 50;
+  background-color: var(--primary-teal);
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
 }
 
 .bg-primary-teal {
@@ -34,30 +53,29 @@ body {
   flex-shrink: 0;
   flex-basis: calc(100% - 0px);
   max-width: calc(100% - 0px);
-  
+
 }
 
 @media (min-width: 640px) {
   .pool-card {
-    flex-basis: calc(50% - 12px); 
+    flex-basis: calc(50% - 12px);
     max-width: calc(50% - 12px);
   }
 }
 
 @media (min-width: 1024px) {
   .pool-card {
-    flex-basis: calc(33.333% - 16px); 
+    flex-basis: calc(33.333% - 16px);
     max-width: calc(33.333% - 16px);
   }
 }
 
 @media (min-width: 1280px) {
   .pool-card {
-    flex-basis: calc(25% - 18px); 
+    flex-basis: calc(25% - 18px);
     max-width: calc(25% - 18px);
   }
 }
-
 .pool-card-image {
   @apply w-full h-48 object-contain bg-gray-50;
 }
@@ -82,10 +100,12 @@ body {
     transform: scale(0.8);
     opacity: 0.75;
   }
+
   50% {
     transform: scale(1.2);
     opacity: 0;
   }
+
   100% {
     transform: scale(0.8);
     opacity: 0.75;

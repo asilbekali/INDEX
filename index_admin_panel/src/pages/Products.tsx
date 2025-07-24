@@ -87,9 +87,8 @@ const ImageViewerModal: React.FC<{
       <GlobalBackdrop isVisible={isVisible} onClick={handleClose} />
       <div className="fixed inset-0 flex items-center justify-center p-4" style={{ zIndex: 100000 }}>
         <div
-          className={`relative bg-white rounded-2xl shadow-2xl max-w-4xl max-h-[90vh] overflow-hidden transform transition-all duration-500 ease-out ${
-            isVisible ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-95 translate-y-8"
-          }`}
+          className={`relative bg-white rounded-2xl shadow-2xl max-w-4xl max-h-[90vh] overflow-hidden transform transition-all duration-500 ease-out ${isVisible ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-95 translate-y-8"
+            }`}
         >
           <div className="flex items-center justify-between p-4 border-b border-gray-200">
             <h3 className="text-lg font-semibold text-gray-900">{productName}</h3>
@@ -234,9 +233,8 @@ const EditProductModal: React.FC<{
       <GlobalBackdrop isVisible={isVisible} onClick={handleClose} />
       <div className="fixed inset-0 flex items-center justify-center p-4" style={{ zIndex: 100000 }}>
         <div
-          className={`relative bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto transform transition-all duration-500 ease-out ${
-            isVisible ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-95 translate-y-8"
-          }`}
+          className={`relative bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto transform transition-all duration-500 ease-out ${isVisible ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-95 translate-y-8"
+            }`}
         >
           <div className="flex items-center justify-between p-6 border-b border-gray-200">
             <div className="flex items-center space-x-4">
@@ -383,9 +381,8 @@ const EditProductModal: React.FC<{
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className={`px-8 py-3 bg-gradient-to-r from-[#009399] to-[#007a7f] text-white font-medium rounded-lg transition-all duration-300 transform hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed ${
-                  isSubmitting ? "animate-pulse" : "hover:shadow-lg"
-                }`}
+                className={`px-8 py-3 bg-gradient-to-r from-[#009399] to-[#007a7f] text-white font-medium rounded-lg transition-all duration-300 transform hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed ${isSubmitting ? "animate-pulse" : "hover:shadow-lg"
+                  }`}
               >
                 {isSubmitting ? (
                   <div className="flex items-center space-x-2">
@@ -564,9 +561,8 @@ const AddProductModal: React.FC<{
       <GlobalBackdrop isVisible={isVisible} onClick={handleClose} />
       <div className="fixed inset-0 flex items-center justify-center p-4" style={{ zIndex: 100000 }}>
         <div
-          className={`relative bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto transform transition-all duration-500 ease-out ${
-            isVisible ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-95 translate-y-8"
-          }`}
+          className={`relative bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto transform transition-all duration-500 ease-out ${isVisible ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-95 translate-y-8"
+            }`}
         >
           <div className="flex items-center justify-between p-6 border-b border-gray-200">
             <div className="flex items-center space-x-4">
@@ -601,13 +597,12 @@ const AddProductModal: React.FC<{
               <div className="md:col-span-2">
                 <label className="block text-sm font-medium text-gray-700 mb-2">{t("image") || "Изображение"} 📸</label>
                 <div
-                  className={`relative border-2 border-dashed rounded-lg p-6 transition-all duration-300 ${
-                    dragActive
+                  className={`relative border-2 border-dashed rounded-lg p-6 transition-all duration-300 ${dragActive
                       ? "border-[#009399] bg-[#009399]/10"
                       : selectedImage
                         ? "border-green-300 bg-green-50"
                         : "border-gray-300 hover:border-[#009399]/50"
-                  }`}
+                    }`}
                   onDragEnter={handleDrag}
                   onDragLeave={handleDrag}
                   onDragOver={handleDrag}
@@ -622,9 +617,8 @@ const AddProductModal: React.FC<{
                   />
                   <div className="text-center">
                     <div
-                      className={`mx-auto w-12 h-12 rounded-lg flex items-center justify-center mb-4 ${
-                        selectedImage ? "bg-green-500" : dragActive ? "bg-[#009399]" : "bg-gray-100"
-                      }`}
+                      className={`mx-auto w-12 h-12 rounded-lg flex items-center justify-center mb-4 ${selectedImage ? "bg-green-500" : dragActive ? "bg-[#009399]" : "bg-gray-100"
+                        }`}
                     >
                       {selectedImage ? (
                         <ImageIcon className="w-6 h-6 text-white" />
@@ -767,9 +761,8 @@ const AddProductModal: React.FC<{
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className={`px-8 py-3 bg-gradient-to-r from-[#009399] to-[#007a7f] text-white font-medium rounded-lg transition-all duration-300 transform hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed ${
-                  isSubmitting ? "animate-pulse" : "hover:shadow-lg"
-                }`}
+                className={`px-8 py-3 bg-gradient-to-r from-[#009399] to-[#007a7f] text-white font-medium rounded-lg transition-all duration-300 transform hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed ${isSubmitting ? "animate-pulse" : "hover:shadow-lg"
+                  }`}
               >
                 {isSubmitting ? (
                   <div className="flex items-center space-x-2">
@@ -1011,14 +1004,12 @@ const ProductList: React.FC = () => {
 
   return (
     <div
-      className={`flex flex-col h-full p-6 bg-gray-50 min-h-screen transition-all duration-1000 ${
-        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-      }`}
+      className={`flex flex-col h-full p-6 bg-gray-50 min-h-screen transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+        }`}
     >
       <div
-        className={`flex items-center justify-between mb-8 transition-all duration-700 ${
-          isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-        }`}
+        className={`flex items-center justify-between mb-8 transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+          }`}
         style={{ transitionDelay: "200ms" }}
       >
         <div className="relative w-full max-w-md group">
@@ -1045,17 +1036,15 @@ const ProductList: React.FC = () => {
       </div>
 
       <div
-        className={`flex border-b border-gray-200 mb-8 bg-white rounded-t-2xl shadow-sm overflow-hidden transition-all duration-700 ${
-          isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-        }`}
+        className={`flex border-b border-gray-200 mb-8 bg-white rounded-t-2xl shadow-sm overflow-hidden transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+          }`}
       >
         <button
           onClick={() => setActiveTab("frameType")}
-          className={`px-8 py-4 text-lg font-semibold transition-all duration-300 relative group overflow-hidden ${
-            activeTab === "frameType"
+          className={`px-8 py-4 text-lg font-semibold transition-all duration-300 relative group overflow-hidden ${activeTab === "frameType"
               ? "text-[#009399] bg-[#009399]/5"
               : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
-          }`}
+            }`}
         >
           <span className="relative z-10">{t("frameType") || "Frame Type"}</span>
           {activeTab === "frameType" && (
@@ -1065,11 +1054,10 @@ const ProductList: React.FC = () => {
         </button>
         <button
           onClick={() => setActiveTab("inflatable")}
-          className={`px-8 py-4 text-lg font-semibold transition-all duration-300 relative group overflow-hidden ${
-            activeTab === "inflatable"
+          className={`px-8 py-4 text-lg font-semibold transition-all duration-300 relative group overflow-hidden ${activeTab === "inflatable"
               ? "text-[#009399] bg-[#009399]/5"
               : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
-          }`}
+            }`}
         >
           <span className="relative z-10">{t("inflatable") || "Inflatable"}</span>
           {activeTab === "inflatable" && (
@@ -1081,9 +1069,8 @@ const ProductList: React.FC = () => {
 
       {productsToDisplay.length > 0 ? (
         <div
-          className={`bg-white rounded-2xl shadow-lg overflow-hidden transition-all duration-700 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-          }`}
+          className={`bg-white rounded-2xl shadow-lg overflow-hidden transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+            }`}
         >
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200 table-fixed">
@@ -1124,9 +1111,8 @@ const ProductList: React.FC = () => {
                   return (
                     <tr
                       key={product.id}
-                      className={`hover:bg-gray-50/50 transition-colors duration-200 ${
-                        isAnimating ? "animate-pulse bg-red-50" : ""
-                      }`}
+                      className={`hover:bg-gray-50/50 transition-colors duration-200 ${isAnimating ? "animate-pulse bg-red-50" : ""
+                        }`}
                       style={{
                         animationDelay: `${index * 100}ms`,
                         opacity: isVisible ? 1 : 0,
@@ -1166,9 +1152,8 @@ const ProductList: React.FC = () => {
                       </td>
                       <td className="w-24 px-4 py-4">
                         <span
-                          className={`inline-flex px-2 py-1 rounded-full text-xs font-medium transition-all duration-300 whitespace-nowrap ${
-                            product.count > 0 ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
-                          }`}
+                          className={`inline-flex px-2 py-1 rounded-full text-xs font-medium transition-all duration-300 whitespace-nowrap ${product.count > 0 ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
+                            }`}
                         >
                           {product.count}
                         </span>
@@ -1232,11 +1217,10 @@ const ProductList: React.FC = () => {
                     <button
                       key={pageNumber}
                       onClick={() => setCurrentPage(pageNumber)}
-                      className={`px-4 py-2 rounded-xl transition-all duration-300 ${
-                        pageNumber === currentPage
+                      className={`px-4 py-2 rounded-xl transition-all duration-300 ${pageNumber === currentPage
                           ? "bg-[#009399] text-white shadow-lg"
                           : "border border-gray-300 text-gray-700 hover:bg-gray-100"
-                      }`}
+                        }`}
                     >
                       {pageNumber}
                     </button>
@@ -1256,9 +1240,8 @@ const ProductList: React.FC = () => {
         </div>
       ) : (
         <div
-          className={`flex flex-col items-center justify-center h-64 bg-white rounded-2xl shadow-lg transition-all duration-700 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-          }`}
+          className={`flex flex-col items-center justify-center h-64 bg-white rounded-2xl shadow-lg transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+            }`}
         >
           <div className="text-gray-400 mb-4 animate-bounce">
             <Search size={48} />
